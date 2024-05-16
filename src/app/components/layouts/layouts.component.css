@@ -1,0 +1,16 @@
+.active {
+    font-weight: bold;
+    color: rgb(224, 203, 14);
+}
+
+/* #logo-sidebar {
+    transition: transform 0.3s ease;
+  }
+  .translate-x-0 {
+    transform: translateX(0);
+  }
+  .-translate-x-full {
+    transform: translateX(-100%);
+} */
+  
+  
