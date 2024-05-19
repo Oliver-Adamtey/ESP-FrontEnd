@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ESP-FrontEND": {
+    "ESP-frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/esp-front-end",
+            "outputPath": "dist/esp-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -57,10 +57,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ESP-FrontEND:build:production"
+              "buildTarget": "ESP-frontend:build:production"
             },
             "development": {
-              "buildTarget": "ESP-FrontEND:build:development"
+              "buildTarget": "ESP-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -68,7 +68,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "ESP-FrontEND:build"
+            "buildTarget": "ESP-frontend:build"
           }
         },
         "test": {
@@ -91,5 +91,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "cf614a53-e431-4f69-84a0-9b39a23dbe7e"
   }
 }
