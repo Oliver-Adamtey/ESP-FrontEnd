@@ -1,0 +1,225 @@
+
+<div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 sm:h-[calc(100vh-2rem)]
+w-full max-w-[20rem] p-4 shadow-sm shadow-blue-gray-900/5 lg:h-[calc(100vh-2rem)] 2xl:h-[calc(100vh-2rem)]">
+  <div class="mb-2 p-4">
+
+
+    <div class="flex cursor-pointer items-center justify-center mb-6 mt-0 -ml-16" (click)="adminDash()" >
+      <img src="{{OrgDasImg}}" alt="Event Vista Logo" class="mr-2">
+      <h2 class="font-bold text-[24.59px] pt-3" >{{Event}} <span class="text-red-700">{{Vista}}</span></h2>
+  </div>
+
+  </div>
+  <nav class=" -mt-10 flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
+
+    <div role="button" tabindex="0" class="flex items-center w-full p-3 rounded-lg text-start leading-tight
+    transition-all outline-none" (click)="adminDash()">
+      <div class="grid place-items-center mr-4">
+        <img src="{{DashBoardChartImg}}" alt="Event Vista Logo" class="-mr-2">
+
+      </div>
+      {{Dashboard}}
+    </div>
+
+    <div  role="button" tabindex="0" (click)="adminEvent()" class="flex items-center w-full p-3  text-start leading-tight
+    transition-alloutline-none bg-[#EAECF0] rounded-none" >
+      <div class="grid place-items-center mr-4">
+        <img src="{{EventLayerImg}}" alt="Event Vista Logo" class="-mr-2">
+      </div>Events
+    </div>
+
+<div role="button" (click)="adminUsers()" tabindex="0" class="flex items-center w-full p-3 rounded-lg
+text-start leading-tight
+transition-all  outline-none">
+  <div class="grid place-items-center mr-4">
+    <img src="{{SettingsImg}}" alt="Event Vista Logo" class="-mr-2">
+
+  </div>Users
+</div>
+
+
+    <div (click)="logout()" role="button" tabindex="0" class=" 2xl:mt-[450px]
+    lg:mt-[150px] flex items-center w-full p-3 rounded-lg text-start
+    leading-tight transition-all">
+    <div class="grid place-items-center mr-4" >
+      <img src="{{LogoutImg}}" alt="Event Vista Logo" class="-mr-2">
+
+    </div>{{LogOut}}
+    </div>
+
+  </nav>
+
+  <div class="dash absolute ml-[305px] border-[1px] rounded-t-lg  w-[900px] h-auto
+  2xl:absolute 2xl:ml-[305px] 2xl:border-[1px] 2xl:rounded-t-lg  2xl:w-[1580px]
+  xl:w-[940px] 2xl:h-[935px]">
+
+
+
+  <div class="dash  border-[1px] rounded-t-lg p-0 pl-5 flex
+  2xl:border-[1px] 2xl:rounded-t-lg 2xl:p-2 2xl:pl-5 2xl:flex">
+
+   <div class="dash-content-left leading-snug">
+    <h2 class="font-bold text-bol" >{{ Event }}</h2>
+    <p class="">
+     {{subTitle}}
+   </p>
+   </div>
+
+   <div class="dash-content-right flex size-7 ml-[300px] space-x-5 mt-2
+   2xl:flex 2xl:size-7 2xl:ml-[530px] 2xl:space-x-5 2xl:mt-2 xl:mt-5">
+
+   <img src="{{NavbarBell}}" alt="" class="block absolute right-60 ">
+
+   @if (profile) {
+
+    <div class=" block -mt-5 z-30 -right-10 absolute shadow-lg p-0 m-0">
+      <div
+        class="bg-white shadow-md rounded-lg p-6 absolute top-20 right-20 w-72 flex"
+      >
+        <img
+          src="assets/esp/dashboard/avatar.png"
+          alt="Navbar Image"
+          class="w-10 h-10 rounded-full mr-2"
+        />
+
+        <div class="relative -space-y-10 mb-8">
+          <h3 class="text-lg w-fit medium">{{ NavBarName }}</h3>
+          <br />
+          <h5 class=" w-fit text-[10px] text-gray-500 mb-10" id="email">
+            {{ email }}
+          </h5>
+        </div>
+
+        <hr class="bg-gray-500 border-2 dark:bg-gray-800 dark:border-gray-700" />
+
+        <button
+          class="absolute -bottom-5 left-6 flex"
+          (click)="accountSettings()"
+        >
+
+        <div class="flex mb-5">
+          <img
+          src="assets/esp/dashboard/settings.png"
+          class="flex w-3 h-3 mt-0 mr-2 bottom-11 absolute">
+
+        <h3 class="flex text-xs text-gray-500 pl-5 " style="font-size: 14px;">Account settings</h3>
+        </div>
+
+        </button>
+      </div>
+      <div class="w-full border-1"></div>
+    </div>
+
+    }
+
+   <img src="{{NavBarImg}}" alt="" class="block absolute right-44 cursor-pointer" (click)="toggleCard()">
+
+   <p class="block absolute right-20 top-8" >
+     {{NavBarName}}
+   </p>
+
+   <button>
+      <img src="{{NavBarDownArrow}}" alt="" class="size-3 absolute  right-10 top-8 ">
+</button>
+
+   </div>
+
+ </div>
+
+
+  <div class="card-all m-0 flex w-4/4 mt-10 ml-8 mr-8 ">
+
+    <h3 class="top-24 2xl:top-28 text-[14px] absolute font-semibold">All event
+      <span class="p-3 bg-[#FFF4ED] rounded-full size-2 absolute mt-0 ml-3"> <span class=" absolute -mt-3 -ml-1 font-bold text-[#BC1B06]">0</span> </span> </h3>
+
+    <div class="searchFilter flex space-x-3 right-56 2xl:top-28 top-24 absolute">
+
+    <div class="search mb-2">
+      <img src="{{SearchImg}}" alt="" class="absolute mt-3.5 ml-2 w-3">
+      <input type="text" id="name" formControlName="fullName" class="shadow-sm
+      bg-[white] w-[220px] border border-gray-300
+      text-gray-900 text-sm rounded-md block  p-2.5 pl-7 dark:text-white" placeholder="Search" >
+    </div>
+
+    <div class="filter mb-2">
+      <img src="{{FilterImg}}" alt="" class="absolute mt-3 ml-2 w-3">
+      <select id="countries" formControlName="role" class="shadow-sm bg-[white] w-[113px]
+      border border-gray-300
+      text-gray-900 text-sm rounded-md block   pl-7  dark:text-white p-2.5">
+        <option value="" selected disabled > {{Filters}}</option>
+        <option  value="{{Free}}">{{Free}}</option>
+        <option  value="{{Paid}}" >{{Paid}}</option>
+      </select>
+    </div>
+
+  </div>
+
+      <button type="submit" class="bg-[#BC1B06] absolute cursor-pointer 2xl:top-28 xl:top-24
+       text-white font-normal p-2.5
+    rounded-md w-[164px] right-10 " (click)="adminCreateEvent()"> <span>+</span> {{CreateEvent}}
+  </button>
+
+
+  </div>
+
+  <div class="card-all m-0 flex  mt-5 ml-8 mr-8 ">
+
+<div class="card w-full h-[486px] border-[1px] rounded-lg shadow-sm m-2 p-5 ">
+
+
+  <div *ngIf="eventCreated">
+
+
+
+
+  </div>
+
+<ng-container *ngIf="eventCreated; else eventNotCreated">
+    <div class="text-first-event text-center justify-center top-24">
+
+      <img src="assets/esp/dashboard/users-temp.png" alt=""
+      class="absolute size-60 xl:ml-12 xl:top-[200px] 2xl:right-[670px] xl:right-[350px] ml-5">
+
+      <div class="text absolute xl:top-[460px] 2xl:right-[350px] left-80 ml-5 xl:ml-12">
+          <h2 class="mt-5 font-semibold text-[20.88px]">{{FirstEvent}}</h2>
+          <p>{{CreateEventThisPage}}</p>
+      </div>
+
+
+
+      <button type="submit" class="bg-[#BC1B06]  mt-96 cursor-pointer
+       text-white font-normal p-2.5
+      rounded-md w-[164px] " (click)="adminCreateEvent()">
+      <span>+</span> {{CreateEvent}}
+
+
+
+    </button>
+
+  </div>
+  </ng-container>
+
+
+  <ng-template #eventNotCreated>
+<p>no event</p>
+  </ng-template>
+
+v>
+
+
+
+
+</div>
+
+
+
+  </div>
+
+
+
+</div>
+
+
+</div>
+
+

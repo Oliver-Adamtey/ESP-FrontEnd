@@ -1,0 +1,26 @@
+<div class="flex justify-center items-center h-screen">
+  <form [formGroup]="tokenForm" (ngSubmit)="onSubmit()" class="space-y-4">
+
+    <h2>Enter Token</h2>
+
+
+    <div class="flex justify-center items-center">
+      <input
+        type="number"
+
+        formControlName="token"
+        class="w-32 h-12 border border-gray-300 rounded-md text-center text-[20px]
+        focus:outline-none focus:ring focus:border-blue-300"
+        placeholder="0000"
+      >
+    </div>
+
+    <button type="submit" [disabled]="!tokenForm.valid" class="bg-[#BC1B06] cursor-pointer hover:bg-[#cc210a] text-white font-bold py-2 px-4
+    rounded focus:outline-none focus:shadow-outline w-full mt-5">verify
+    </button>
+  </form>
+</div>
+
+
+
+

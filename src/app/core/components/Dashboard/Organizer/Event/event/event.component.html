@@ -1,0 +1,345 @@
+<div
+  class="font-inter relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 sm:h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-sm shadow-blue-gray-900/5 lg:h-[calc(100vh-2rem)] 2xl:h-[calc(100vh-2rem)]"
+>
+  <div class="mb-2 p-4">
+    <div
+      class="flex cursor-pointer items-center justify-center mb-6 mt-0 -ml-16"
+      (click)="orgDash()"
+    >
+      <img src="assets/esp/logo.png" alt="Event Vista Logo" class="mr-2" />
+      <h2 class="font-bold text-[24.59px] pt-3">
+        Event  <span class="text-red-700"> Vista </span>
+      </h2>
+    </div>
+  </div>
+  <nav
+    class="-mt-10 flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700"
+  >
+    <div
+      role="button"
+      tabindex="0"
+      class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none"
+      (click)="orgDash()"
+    >
+      <div class="grid place-items-center mr-4">
+        <img
+          src="assets/esp/dashboard/bar-chart-square-02.png"
+          alt="Event Vista Logo"
+          class="-mr-2"
+        />
+      </div>
+       Dashboard
+    </div>
+
+    <div
+      role="button"
+      tabindex="0"
+      (click)="orgEvent()"
+      class="flex items-center w-full p-3 text-start leading-tight transition-alloutline-none bg-[#EAECF0] rounded-none"
+    >
+      <div class="grid place-items-center mr-4">
+        <img src="assets/esp/dashboard/layers-three-01.png" alt="Event Vista Logo" class="-mr-2" />
+      </div>
+      Events
+    </div>
+
+    <div
+      role="button"
+      (click)="orgUsers()"
+      tabindex="0"
+      class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none"
+    >
+      <div class="grid place-items-center mr-4">
+        <img src="assets/esp/dashboard/user.png" alt="Event Vista Logo" class="-mr-2" />
+      </div>
+      Users
+    </div>
+
+    <div
+      (click)="logout()"
+      role="button"
+      tabindex="0"
+      class="2xl:mt-[450px] lg:mt-[150px] flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all"
+    >
+      <div class="grid place-items-center mr-4">
+        <img src="assets/esp/dashboard/logout.png" alt="Event Vista Logo" class="-mr-2" />
+      </div>
+      Log out
+    </div>
+  </nav>
+
+  <div
+    class="dash absolute ml-[305px] border-[1px] rounded-t-lg w-[900px] h-auto 2xl:absolute 2xl:ml-[305px] 2xl:border-[1px] 2xl:rounded-t-lg 2xl:w-[1580px] xl:w-[940px] 2xl:h-[935px]"
+  >
+    <div
+      class="dash border-[1px] rounded-t-lg p-0 pl-5 flex 2xl:border-[1px] 2xl:rounded-t-lg 2xl:p-2 2xl:pl-5 2xl:flex"
+    >
+      <div class="dash-content-left leading-snug">
+        <h2 class="font-semibold text-[24px]"> Event </h2>
+        <p class="">
+          Plan and manage your gatherings effortlessly.
+        </p>
+      </div>
+
+      <div
+        class="dash-content-right flex size-7 ml-[300px] space-x-5 mt-2 2xl:flex 2xl:size-7 2xl:ml-[530px] 2xl:space-x-5 2xl:mt-2 xl:mt-5"
+      >
+        <img src="assets/esp/dashboard/bell.png" alt="" class="block absolute right-60 2xl:-mt-1 text-[14px] font-medium" />
+        @if (profile) {
+
+          <div class="block -mt-5 z-50 -right-10 absolute shadow-lg p-0 m-0">
+            <div
+              class="bg-white shadow-md rounded-lg p-6 absolute top-20 right-20 w-72 flex"
+            >
+              <img
+                src="assets/esp/dashboard/avatar.png"
+                alt="Navbar Image"
+                class="w-10 h-10 rounded-full mr-2"
+              />
+
+              <div class="relative -space-y-6 mb-8">
+                <h3 class="text-lg w-fit medium 2xl:text-[16px] 2xl:font-medium text-[#344054]">Oliva Rhye</h3>
+                <br />
+                <h5 class=" w-fit text-[14px] text-gray-500 2xl:mb-12" id="email">
+                  {{ email }}
+                </h5>
+              </div>
+
+              <hr
+                class="bg-gray-500 border-2 dark:bg-gray-800 dark:border-gray-700"
+              />
+
+              <button
+                class="absolute -bottom-5 left-6 flex"
+                (click)="accountSettings()"
+              >
+                <div class="flex mb-8">
+                  <img
+                    src="assets/esp/dashboard/settings.png"
+                    class="flex w-3 h-3 mt-0 mr-2 bottom-11 "
+                  />
+
+                  <h3
+                    class="flex text-xs text-gray-500 pl-5"
+                    style="font-size: 14px"
+                  >
+                    Account settings
+                  </h3>
+                </div>
+              </button>
+            </div>
+            <div class="w-full border-1"></div>
+          </div>
+
+          }
+
+
+        <img
+          src="assets/esp/dashboard/avatar.png"
+          alt=""
+          class="block absolute right-44 cursor-pointer 2xl:-mt-1"
+          (click)="toggleCard()"
+        />
+
+        <p class="block absolute right-20 top-8 2xl:-mt-2 text-[14px] font-medium">
+          Olivia Rhye
+        </p>
+
+        <button>
+          <img
+            src="assets/esp/dashboard/down.png"
+            alt=""
+            class="size-5 absolute 2xl:right-10 2xl:top-6 "
+          />
+        </button>
+      </div>
+    </div>
+
+    <div class="card-all m-0 flex w-4/4 mt-10 ml-8 mr-8">
+      <h3 class="top-24 2xl:top-28 text-[14px] absolute font-semibold">
+        All event
+        <span class="p-3 bg-[#FFF4ED] rounded-full size-2 absolute mt-0 ml-3">
+          <span class="absolute -mt-3 -ml-1 font-bold text-[#BC1B06]">{{records.length}}</span>
+        </span>
+      </h3>
+
+      <div
+        class="searchFilter flex space-x-3 right-56 2xl:top-28 top-24 absolute"
+      >
+        <div class="search mb-2">
+          <img src="assets/esp/dashboard/search.png" alt="" class="absolute mt-3.5 ml-2 w-3" />
+          <input
+            type="text"
+            id="name"
+            formControlName="fullName"
+            class="shadow-sm bg-[white] w-[220px] border border-gray-300 text-gray-900 text-sm rounded-md block p-2.5 pl-7 dark:text-white"
+            placeholder="Search"
+          />
+        </div>
+
+        <div class="filter mb-2">
+          <img src="assets/esp/dashboard/filter.png" alt="" class="absolute mt-3 ml-2 w-3" />
+          <select
+            id="countries"
+            formControlName="role"
+            class="shadow-sm bg-[white] w-[113px] border border-gray-300 text-gray-900 text-sm rounded-md block pl-7 dark:text-white p-2.5"
+          >
+            <option value="" selected disabled> Filters </option>
+            <option value="All "> All </option>
+            <option value="Free "> Free </option>
+            <option value="Paid ">Paid </option>
+          </select>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="bg-[#BC1B06] absolute cursor-pointer 2xl:top-28 xl:top-24 text-white font-normal p-2.5 rounded-md w-[164px] right-10"
+        (click)="orgCreateEvent()"
+      >
+        <span>+</span> Create event
+      </button>
+    </div>
+
+    <div class="card-all m-0 flex mt-5 ml-8 mr-8">
+      <div class="card w-full">
+
+        @if(!preload){
+          <div class="mb-10">
+            <app-preload-general></app-preload-general>
+          </div>
+
+        }
+
+        @if (!eventCreated) {
+
+        <div  class="w-fit gap-x-10 2xl:w-3/3">
+
+
+
+          <div *ngFor="let record of records"
+              class="max-w-sm rounded-md overflow-hidden ml-5 w-[265px] h-[380px] border-[1px] border-gray-300 inline-block py-3 xl:mt-5 px-5"
+            >
+   <img class="w-[250px] h-[154px] rounded-md" src="{{record.eventImageUrl}}" alt="Sunset in the mountains">
+
+              <div class="px-0 py-4">
+                <div class="flex space-x-20">
+                  <div class="border-gray-400 block">
+                    <img
+                      src="{{record.organizerLogo}}"
+                      alt="Event Vista Logo"
+                      class="absolute size-6 rounded-sm"
+                    />
+                  </div>
+                  <p class="">{{ record.eventTitle | slice:0:5 }}</p>
+
+
+                  <button class="cursor-pointer">
+                    <svg
+                      class="w-5 h-5 rotate-90 border-1 border-gray-500"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 16 3"
+                    >
+                      <path
+                        d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+
+                <h2 class="text-left text-[12px]">{{ record.eventTitle | uppercase}}</h2>
+                <p class="">{{ record.eventSummary | lowercase | slice:0:25 }}</p>
+
+                <div class="grid 2xl:space-x-[260px] space-y-1 xl:mt-0 xl:h-8">
+                  <div class="flex items-center">
+                    <img
+                      src="assets/esp/location.png"
+                      alt=""
+                      class="size-5"
+                    />
+                    <span class="ml-2">{{ record.venueLocation | uppercase | slice: 0:10 }}</span>
+                  </div>
+                  <div class="flex items-center">
+                    <img
+                      src="assets/esp/start_date.png"
+                      alt=""
+                      class="size-5"
+                    />
+                    @if (record.eventStartDate) {
+
+                      <span class="ml-2">{{record.eventStartDate}}</span>
+                    } @else {
+                      <span class="ml-2"> {{ 'Date not defined' }}</span>
+
+                    }
+
+                  </div>
+                  <div class="flex items-center">
+                    <img
+                      src="assets/esp/ticket_price.png"
+                      alt=""
+                      class="size-5"
+                    />
+                    <span class="ml-2"> <span>Ghc</span>  {{ record.eventPrice }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        }
+
+        @else if(records.length < 0) {
+
+        <div>
+          <div class="text-first-event text-center justify-center top-24">
+            <img
+              src="assets/esp/dashboard/spring.png"
+              alt=""
+              class="absolute size-60 xl:ml-12 xl:top-[200px] 2xl:right-[670px] xl:right-[350px] ml-5"
+            />
+
+            <div
+              class="text absolute xl:top-[460px] 2xl:right-[350px] left-80 ml-5 xl:ml-12"
+            >
+              <h2 class="mt-5 font-semibold text-[20.88px]">
+                Create your first event
+              </h2>
+              <p>Create events on this page</p>
+            </div>
+
+            <button
+              type="submit"
+              class="bg-[#BC1B06] mt-96 cursor-pointer text-white font-normal p-2.5 rounded-md w-[164px]"
+              (click)="orgCreateEvent()"
+            >
+              <span>+</span>  Create event
+            </button>
+          </div>
+
+          <ng-template #eventNotCreated>
+            <p>no event</p>
+          </ng-template>
+
+
+
+
+        </div>
+
+
+
+
+        }
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
