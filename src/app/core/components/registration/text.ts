@@ -1,9 +1,9 @@
 export const signupPageTexts = {
   mainHeading: 'Seamlessly Plan, Manage, and Execute Unforgettable Events',
   subHeading: 'Streamline your event management process, engage attendees, and create memorable experiences with our comprehensive event planning platform.',
-  emailLabel: 'Email',
+  emailLabel: 'Email*',
   emailPlaceholder: 'Enter your email address',
-  passwordLabel: 'Password',
+  passwordLabel: 'Password*',
   passwordPlaceholder: 'Enter password here',
   rememberCheckboxLabel: 'Remember me',
   forgotPasswordLink: 'Forgot password?',

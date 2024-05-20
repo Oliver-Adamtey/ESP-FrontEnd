@@ -57,7 +57,7 @@ leading-8 bg-white pl-8 pr-8 2xl:mt-20 pt-5 lg:rounded-xl  relative lg:absolute 
 
 
   <div class="mb-2">
-    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{signupPageTexts.signupAs}}</label>
+    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">{{signupPageTexts.signupAs}}</label>
     <select id="countries" formControlName="role" class=" bg-white-50 border border-gray-300 text-gray-900 text-sm
     rounded-lg block w-full p-2.5 dark:text-white ">
       <option value="" selected disabled>Choose...</option>
@@ -67,7 +67,7 @@ leading-8 bg-white pl-8 pr-8 2xl:mt-20 pt-5 lg:rounded-xl  relative lg:absolute 
   </div>
 
   <div class="mb-2">
-    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{signupPageTexts.fullName}}</label>
+    <label for="name" class="block mb-2 text-sm font-medium text-gray-900">{{signupPageTexts.fullName}}</label>
     <input type="text" id="name" formControlName="fullName" class="shadow-sm bg-white-50 border border-gray-300
     text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:text-white" placeholder="Enter your name here" required>
     <div class="text-red-600 absolute -mt-2 text-[10px]" *ngIf="Registration.get('fullName')?.invalid &&
@@ -78,7 +78,7 @@ leading-8 bg-white pl-8 pr-8 2xl:mt-20 pt-5 lg:rounded-xl  relative lg:absolute 
   </div>
 
   <div class="mb-2">
-    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-5">Email</label>
+    <label for="name" class="block mb-2 text-sm font-medium text-gray-900">{{signupPageTexts.emailLabel}}</label>
     <input type="email" id="email" formControlName="email" class="shadow-sm bg-white-50 border border-gray-300 mt-3
     text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:text-white" placeholder="Enter your email address" required>
     <div class="text-red-600 absolute -mt-2 text-[10px]" *ngIf="Registration.get('email')?.invalid &&
@@ -89,7 +89,7 @@ leading-8 bg-white pl-8 pr-8 2xl:mt-20 pt-5 lg:rounded-xl  relative lg:absolute 
   </div>
 
   <div class="mb-2">
-    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-5">Password</label>
+    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 mt-5">Password*</label>
     <input type="password" id="password" formControlName="password" class="shadow-sm bg-white-50 border
     border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:text-white" placeholder="Enter password here" required>
     <div class="text-red-600 absolute -mt-2 text-[10px]" *ngIf="Registration.get('password')?.invalid &&
@@ -100,7 +100,7 @@ leading-8 bg-white pl-8 pr-8 2xl:mt-20 pt-5 lg:rounded-xl  relative lg:absolute 
   </div>
 
   <div class="mb-3">
-    <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-5">Confirm password</label>
+    <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900 mt-5">Confirm password*</label>
     <input type="password" id="confirmPassword" formControlName="confirmPassword" class="shadow-sm bg-white-50 border
     border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
     dark:text-white" placeholder="Re-enter password" required>
