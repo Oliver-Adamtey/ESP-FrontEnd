@@ -4,7 +4,7 @@ import { environment } from '../../../../environments/environment';
 
 
 export const adminGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-  const adminSession = typeof localStorage !== 'undefined' ? localStorage.getItem(environment.ADMIN_TOKEN) : null;
+  const adminSession = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(environment.ADMIN_TOKEN) : null;
 
   const router: Router = inject(Router);
   const protectedRoutes: string[] = [

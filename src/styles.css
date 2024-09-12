@@ -6,3 +6,6 @@
   font-family: "Jost";
   src: url("assets/esp/font/static/inter.ttf") format("truetype");
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

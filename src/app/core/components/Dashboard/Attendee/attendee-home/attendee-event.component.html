@@ -1,351 +1,186 @@
-<div
-  class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 sm:h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-sm shadow-blue-gray-900/5 lg:h-[calc(100vh-2rem)] 2xl:h-[calc(100vh-2rem)]"
->
-  <div class="mb-2 p-4">
-    <div
-      class="flex cursor-pointer items-center justify-center mb-6 mt-0 -ml-16"
-      (click)="orgDash()"
-    >
-      <img src="assets/esp/logo.png" alt="Event Vista Logo" class="mr-2" />
-      <h2 class="font-bold text-[24.59px] pt-3">
-        Event  <span class="text-red-700"> Vista </span>
-      </h2>
-    </div>
-  </div>
-  <nav
-    class="-mt-10 flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700"
-  >
-
-    <div
-      role="button"
-      tabindex="0"
-      (click)="orgEvent()"
-      class="flex items-center w-full p-3 text-start leading-tight transition-alloutline-none bg-[#EAECF0] rounded-none"
-    >
-      <div class="grid place-items-center mr-4">
-        <img src="assets/esp/dashboard/layers-three-01.png" alt="Event Vista Logo" class="-mr-2" />
-      </div>
-      Events
-    </div>
-
-
-    <div
-      (click)="logout()"
-      role="button"
-      tabindex="0"
-      class="2xl:mt-[450px] lg:mt-[150px] flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all"
-    >
-      <div class="grid place-items-center mr-4">
-        <img src="assets/esp/dashboard/logout.png" alt="Event Vista Logo" class="-mr-2" />
-      </div>
-      Log out
-    </div>
-  </nav>
-
-  <div
-    class="dash absolute ml-[305px] border-[1px] rounded-t-lg w-[900px] h-auto 2xl:absolute 2xl:ml-[305px] 2xl:border-[1px] 2xl:rounded-t-lg 2xl:w-[1580px] xl:w-[940px] 2xl:h-[935px]"
-  >
-    <div
-      class="dash border-[1px] rounded-t-lg p-0 pl-5 flex 2xl:border-[1px] 2xl:rounded-t-lg 2xl:p-2 2xl:pl-5 2xl:flex"
-    >
-      <div class="dash-content-left leading-snug">
-        <h2 class="font-bold text-bol"> Event </h2>
-        <p class="">
-          Plan and manage your gatherings effortlessly.
-        </p>
-      </div>
-
-      <div
-        class="dash-content-right flex size-7 ml-[300px] space-x-5 mt-2 2xl:flex 2xl:size-7 2xl:ml-[530px] 2xl:space-x-5 2xl:mt-2 xl:mt-5"
-      >
-        <img src="assets/esp/dashboard/bell.png" alt="" class="block absolute right-60" />
-
-        @if (profile) {
-
-        <div class="block -mt-5 z-30 -right-10 absolute shadow-lg p-0 m-0">
-          <div
-            class="bg-white shadow-md rounded-lg p-6 absolute top-20 right-20 w-72 flex"
-          >
-            <img
-              src="assets/esp/dashboard/avatar.png"
-              alt="Navbar Image"
-              class="w-10 h-10 rounded-full mr-2"
-            />
-
-            <div class="relative -space-y-10 mb-8">
-              <h3 class="text-lg w-fit medium">Olivia Rhye</h3>
-              <br />
-              <h5 class="w-fit text-[10px] text-gray-500 mb-10" id="email">
-                ekumkofimail.com
-              </h5>
-            </div>
-
-            <hr
-              class="bg-gray-500 border-2 dark:bg-gray-800 dark:border-gray-700"
-            />
-
-            <button
-              class="absolute -bottom-5 left-6 flex"
-              (click)="accountSettings()"
-            >
-              <div class="flex mb-5">
-                <img
-                  src="assets/esp/dashboard/settings.png"
-                  class="flex w-3 h-3 mt-0 mr-2 bottom-11 absolute"
-                />
-
-                <h3
-                  class="flex text-xs text-gray-500 pl-5"
-                  style="font-size: 14px"
-                >
-                  Account settings
-                </h3>
-              </div>
-            </button>
-          </div>
-          <div class="w-full border-1"></div>
+<div class="flex flex-col md:flex-row h-screen">
+  <app-attendee-sidebar class="md:w-64"></app-attendee-sidebar>
+  <div class="event-container shadow-lg border border-gray-200 rounded-lg flex-1 mt-4 mr-2">
+    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-full shadow-sm shadow-blue-gray-900/5">
+      <div class="dash border-[1px] rounded-t-lg pl-5 p-1 flex">
+        <div class="mb-2">
+          <div class="font-bold text-bol">Home</div>
+          <p>Dive in and Explore the Possibilities</p>
         </div>
-
-        }
-
-        <img
-          src="assets/esp/dashboard/avatar.png"
-          alt=""
-          class="block absolute right-44 cursor-pointer"
-          (click)="toggleCard()"
-        />
-
-        <p class="block absolute right-20 top-8">
-          Olivia Rhye
-        </p>
-
-        <button>
-          <img
-            src="assets/esp/dashboard/down.png"
-            alt=""
-            class="size-3 absolute right-10 top-8"
-          />
-        </button>
+        <div class="dash-content-right mb-2 flex ml-auto space-x-4 mt-2 xl:mt-2 h-10">
+          <app-notification-bell></app-notification-bell>
+          <div class="relative">
+            <img *ngIf="profileImageUrl; else svgFallbackp" [src]="profileImageUrl" alt="Avatar" class="block cursor-pointer border rounded-full w-10 h-10" (click)="toggleCard()" />
+            <ng-template #svgFallbackp>
+              <svg width="18" height="18" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="bg-[#C7B9DA] pt-2 pb-1 w-10 h-10 rounded-full border">
+                <path d="M17 19V17C17 15.9391 16.5786 14.9217 15.8284 14.1716C15.0783 13.4214 14.0609 13 13 13H5C3.93913 13 2.92172 13.4214 2.17157 14.1716C1.42143 14.9217 1 15.9391 1 17V19M13 5C13 7.20914 11.2091 9 9 9C6.79086 9 5 7.20914 5 5C5 2.79086 6.79086 1 9 1C11.2091 1 13 2.79086 13 5Z" stroke="#344054" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </ng-template>
+            <div *ngIf="showProfileCard" class="absolute right-0 mt-[1rem] w-72 bg-white shadow-md rounded-lg p-6 z-10">
+              <div class="flex items-center mb-4">
+                <img *ngIf="profileImageUrl; else svgFallbackp" [src]="profileImageUrl" alt="Navbar Image" class="w-10 h-10 rounded-full mr-2" />
+                <div class="ml-2">
+                  <h3 class="text-lg medium">{{fullName}}</h3>
+                  <p class="text-xs text-gray-500">{{ email }}</p>
+                </div>
+              </div>
+              <hr class="bg-gray-500 border-2 dark:bg-gray-800 dark:border-gray-700 mb-4" />
+              <button class="flex items-center text-sm text-gray-500" (click)="accountSettings()">
+                <img src="assets/esp/dashboard/settings.png" class="w-4 h-4 mr-2" />
+                Account settings
+              </button>
+            </div>
+          </div>
+          <p class="block pt-2 h-8">
+            {{fullName}}
+          </p>
+          <button (click)="toggleCard()">
+            <img src="assets/esp/dashboard/down.png" alt="Down Icon" class="block mr-8" [class.clicked]="showProfileCard" />
+          </button>
+        </div>
       </div>
-    </div>
-
-    <div class="card-all m-0 flex w-4/4 mt-10 ml-8 mr-">
-      <h3 class="top-24 2xl:top-28 text-[14px] absolute font-semibold">
-        All event
-        <span class="p-3 bg-[#FFF4ED] rounded-full size-2 absolute mt-0 ml-3">
-          <span class="absolute -mt-3 -ml-1 font-bold text-[#BC1B06]">{{records.length}}</span>
-        </span>
-      </h3>
-
-      <div
-        class="searchFilter flex space-x-6 right-10 2xl:top-28 top-24 absolute"
-      >
-        <div class="search mb-2">
-          <img src="assets/esp/attendee/location.svg" alt="" class="absolute mt-3.5 ml-2 w-3" />
+        <h2 class="pl-4 text-gray-900 text-2xl font-bold pt-2">Welcome, <span>{{fullName}}</span> 👋</h2>
+      <div class="searchFilter flex flex-wrap items-center space-x-40 md:space-x-4 p-4">
+        <div class="relative flex-grow mb-4 md:mb-0">
+          <img src="assets/esp/dashboard/search.png" alt="Location Icon" class="absolute top-1/2 transform -translate-y-1/2 left-3 w-4" />
           <input
             type="text"
-            id="name"
-            formControlName="fullName"
-            class="shadow-sm bg-[white] w-[220px] border border-gray-300 text-gray-300 text-sm rounded-md block p-2.5 pl-7 dark:text-white"
-            placeholder="Search by location"
+            id="filterSearch"
+            [(ngModel)]="filterByEventTitle"
+            #eventtitleInput
+            class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-md block pl-10 p-2.5 w-full"
+            placeholder="Search events by name"
+            (change)="onEventtitleChange($event)"
           />
         </div>
+        <div class="relative flex-grow mb-4 md:mb-0">
+          <img src="assets/esp/dashboard/location.png" alt="Location Icon" class="absolute top-1/2 transform -translate-y-1/2 left-3 w-4" />
+          <form (ngSubmit)="onLocationChange(filterByLocation)">
 
-        <div class="filter mb-2">
-
-        <div class="relative max-w-sm">
-
-          <mat-datepicker   #datepicker ></mat-datepicker>
-          <input matInput [matDatepicker]="datepicker" type="text" class="bg-white-50 border border-gray-300
-           text-sm rounded-lg  block w-full
-          pl-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white " placeholder="Select date">
-          <mat-datepicker-toggle matSuffix [for]="datepicker" class="absolute -mt-11 w-20 "></mat-datepicker-toggle>
-
+            <input
+            type="text"
+            id="filterByLocation"
+            [(ngModel)]="filterByLocation"
+            class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-md block pl-10 p-2.5 w-full"
+            placeholder="Enter a location or "
+            name = "filterByLocation"
+            />
+          </form>
+          
         </div>
-
-
+        <div class="relative flex-grow mb-4 z-10 md:mb-0">
+          <fnc-date-picker (dateChange)="onDateRangeChange($event)"></fnc-date-picker>
         </div>
-
-
-        <div class="filter mb-2">
+        <div class="relative flex-grow mb-4 md:mb-0">
           <select
-            id="countries"
-            formControlName="role"
-            class="shadow-sm bg-[white] w-[113px] border border-gray-300 text-gray-900 text-sm rounded-md block pl-2 dark:text-white p-2.5"
+            id="category"
+            #categorySelect
+            [(ngModel)]="filterByCategory"
+            (change)="onCategoryChange($event)"
+            class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-md block p-2.5 w-full appearance-none pr-10"
           >
-            <option class="text-gray-300" value="" selected disabled> Category </option>
-            <option value="All "> All </option>
-            <option value="Free "> Free </option>
-
+            <option class="text-gray-300" value="" selected disabled>Filter by category</option>
+            <option value="all">All Categories</option>
+            <option value="Business">Business</option>
+            <option value="Technology">Technology</option>
+            <option value="Arts & culture">Arts & culture</option>
+            <option value="Sports & fitness">Sports and fitness</option>
+            <option value="Food and drinks">Food and drinks</option>
+            <option value="Travel & tour">Travel & tour</option>
+            <option value="Entertainment">Entertainment</option>
+          </select>
+          <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </span>
+        </div>
+        
+        <div class="relative flex-grow mb-4 md:mb-0">
+          <img src="assets/esp/dashboard/filter.png" alt="Filter Icon" class="absolute top-1/2 transform -translate-y-1/2 left-3 w-4" />
+          <select
+            id="filter"
+            [(ngModel)]="filterByTicketStatus"
+            #ticketStatusSelect
+            (change)="onTicketStatusChange($event)"
+            class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-md block pl-10 p-2.5 w-full custom-select"
+          >
+            <option value="" selected disabled>Filter by status</option>
+            <option value="all">All</option>
+            <option value="Free">Free</option>
+            <option value="Paid">Paid</option>
           </select>
         </div>
-
-
-        <div class="filter mb-2">
-          <img src="assets/esp/dashboard/filter.png" alt="" class="absolute mt-3 ml-2 w-3" />
-          <select
-            id="countries"
-            formControlName="role"
-            class="shadow-sm bg-[white] w-[113px] border border-gray-300 text-gray-900 text-sm rounded-md block pl-7 dark:text-white p-2.5"
-          >
-            <option value="" selected disabled> Filters </option>
-            <option value="All "> All </option>
-            <option value="Free "> Free </option>
-            <option value="Paid ">Paid </option>
-            <option value="Paid ">Registered </option>
-            <option value="Paid ">Unregistered </option>
-          </select>
-        </div>
-
-
-
       </div>
-
-    </div>
-
-    <div class="font-bold ml-8 mt-10 text-[20px]">
-      <h2 class="">Welcome, <span>{{fullName}}</span> 👋</h2>
-    </div>
-
-    <div class="card-all m-0 flex mt-5 ml-8 mr-8">
-      <div class="card w-full">
-
-        @if(preload){
-          <div class="mb-10">
-            <app-preload-general></app-preload-general>
+      <div class="overflow-y-auto h-screen">
+        <div class="card-all mt-2 pb-40">
+          <div *ngIf="!areFiltersApplied()" class="mobile-view sm:m-4">
+            <div class="flex justify-between items-center space-x-4 md:space-x-4">
+              <h1 class="text-lg  font-bold my-2">Upcoming Events</h1>
+              <a [routerLink]="['/attendee-popularevents']" class="cursor-pointer p-4">View all events</a>
+            </div>
+            <div>
+              <app-attendee-upcoming-events></app-attendee-upcoming-events>
+            </div>
+          </div>
+          <div *ngIf="!areFiltersApplied()" class="mobile-view sm:m-4 pb-4">
+            <div class="flex justify-between items-center space-x-4 md:space-x-4">
+              <h1 class="text-lg  font-bold my-2">Popular Events</h1>
+              <a [routerLink]="['/attendee-popularevents']" class="cursor-pointer p-4"></a>
+            </div>
+            <div>
+              <app-recommended-events></app-recommended-events>
+            </div>
           </div>
 
-        }
-
-        @if (eventCreated) {
-
-        <div  class="w-fit gap-x-10 2xl:w-3/3">
-
-
-
-          <div *ngFor="let record of records"
-              class="max-w-sm rounded-md overflow-hidden ml-5 w-[265px] h-[380px] border-[1px] border-gray-300 inline-block py-3 xl:mt-5 px-5"
-            >
-   <img class="w-[250px] h-[154px] rounded-md" src="{{record.eventImageUrl}}" alt="Sunset in the mountains">
-
-              <div class="px-0 py-4">
-                <div class="flex space-x-20">
-                  <div class="border-gray-400 block">
-                    <img
-                      src="{{record.organizerLogo}}"
-                      alt="Event Vista Logo"
-                      class="absolute size-6 rounded-sm"
-                    />
+          <div class="mobile-view sm:m-4 pb-10">
+            <div *ngIf="!areFiltersApplied()" class="flex justify-between items-center space-x-4 md:space-x-4">
+              <h1 class="text-lg font-bold my-2">Recommended Events</h1>
+              <a [routerLink]="['/attendee-popularevents']" class="cursor-pointer p-4"></a>
+            </div>
+            
+            <div *ngIf="!isLoading && popularEvents.length > 0" class="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-5 2xl:gap-10 w-full" role="button">
+              <div *ngFor="let event of popularEvents" class="relative">
+                <div class="bg-white border rounded-lg overflow-hidden flex flex-col h-full onhover" [routerLink]="['/attendee-preview/'+ event.eventId]">
+                  <div class="relative p-4">
+                    <img class="event-img w-full h-[160px] object-cover rounded-lg" [src]="event.eventImageUrl" alt="{{ event.eventId }}">
                   </div>
-                  <!-- <p class="">{{ record.eventTitle | slice:0:5 }}</p> -->
-
-
-                  <button class="cursor-pointer">
-                    <svg
-                      class="w-5 h-5 rotate-90 border-1 border-gray-500"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 16 3"
-                    >
-                      <path
-                        d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"
-                      />
-                    </svg>
-                  </button>
-                </div>
-
-                <!-- <h2 class="text-left text-[12px]">{{ record.eventTitle | uppercase}}</h2> -->
-                <!-- <p class="">{{ record.eventSummary | lowercase | slice:0:25 }}</p> -->
-
-                <div class="grid 2xl:space-x-[260px] space-y-1 xl:mt-0 xl:h-8">
-                  <div class="flex items-center">
-                    <img
-                      src="assets/esp/location.png"
-                      alt=""
-                      class="size-5"
-                    />
-                    <!-- <span class="ml-2">{{ record.venueLocation | uppercase | slice: 0:10 }}</span> -->
+                  <div class="flex justify-between mb-1">
+                    <p class="text-gray-600 pl-4 flex-shrink-0"><img [src]="event.organizerLogo" alt="img Icon" class="inline-block h-10 w-10 rounded-full mb-1 mr-2">{{event.organizerFullName}}</p>
                   </div>
-                  <div class="flex items-center">
-                    <img
-                      src="assets/esp/start_date.png"
-                      alt=""
-                      class="size-5"
-                    />
-                    @if (record.eventStartDate) {
-
-                      <span class="ml-2">{{record.eventStartDate}}</span>
-                    } @else {
-                      <span class="ml-2"> {{ 'Date not defined' }}</span>
-
-                    }
-
-                  </div>
-                  <div class="flex items-center">
-                    <img
-                      src="assets/esp/ticket_price.png"
-                      alt=""
-                      class="size-5"
-                    />
-                    <span class="ml-2"> <span>Ghc</span>  {{ record.eventPrice }}</span>
+                  <div class="pl-4 flex flex-col flex-grow">
+                    <h2 class="text-lg mb-1 font-semibold text-gray-800 truncate">{{ event.eventTitle }}</h2>
+                    <p class="text-gray-600 mb-1 flex-grow truncate" style="max-width: 186px;">{{ event.eventSummary }}</p>
+                    <div class="event-details mt-1">
+                      <p class="text-gray-600 truncate">
+                        <ng-container *ngIf="event.eventType === null || event.eventType === ''; else virtualEventDetails">
+                          <p class="text-gray-600 truncate">
+                            <img src="assets/esp/dashboard/location.png" alt="Location Icon" class="inline-block">
+                            {{ event.venueLocation }}
+                          </p>
+                        </ng-container>
+                        <ng-template #virtualEventDetails>
+                          <p class="text-gray-600 truncate">
+                            <img src="assets/esp/dashboard/location.png" alt="Location Icon" class="inline-block mr-2">
+                              {{ event.eventType | capitalizeFirst }}
+                          </p>
+                        </ng-template>
+                      </p>
+                      <p class="text-gray-600 mb-1 truncate"><img src="assets/esp/dashboard/date.png" alt="Date Icon" class="inline-block mr-2"> {{ event.eventStartDate | customDate: 'full' }}</p>
+                      <p class="text-gray-600 mb-2 truncate"><img src="assets/esp/dashboard/ticket.png" alt="Amount Icon" class="inline-block mr-2"> {{ event.ticketStatus }}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-
-
-        }
-
-        @else if(records.length < 0) {
-
-        <div>
-          <div class="text-first-event text-center justify-center top-24">
-            <img
-              src="assets/esp/dashboard/spring.png"
-              alt=""
-              class="absolute size-60 xl:ml-12 xl:top-[200px] 2xl:right-[670px] xl:right-[350px] ml-5"
-            />
-
-            <div
-              class="text absolute xl:top-[460px] 2xl:right-[350px] left-80 ml-5 xl:ml-12"
-            >
-              <h2 class="mt-5 font-semibold text-[20.88px]">
-                Create your first event
-              </h2>
-              <p>Create events on this page</p>
+            <div *ngIf="isLoading" class="mb-10 mt-10 flex items-center justify-center ">
+              <img src="assets/esp/org-dash/preload.gif" alt="Loading..." class="w-20 h-20" />
             </div>
-
-            <button
-              type="submit"
-              class="bg-[#BC1B06] mt-96 cursor-pointer text-white font-normal p-2.5 rounded-md w-[164px]"
-              (click)="orgCreateEvent()"
-            >
-              <span>+</span>  Create event
-            </button>
+            <div *ngIf="!isLoading && events.length === 0">
+              <p class="text-center">No events found, try searching another again</p> 
+            </div>
           </div>
-
-          <ng-template #eventNotCreated>
-            <p>no event</p>
-          </ng-template>
-
-
-
-
+                            
         </div>
-
-
-
-
-        }
-
-
-
-
-
-
       </div>
-    </div>
-  </div>
 </div>

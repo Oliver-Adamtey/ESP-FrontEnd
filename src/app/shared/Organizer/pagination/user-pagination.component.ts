@@ -1,17 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {  Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-user-pagination',
   standalone: true,
-  imports: [
-
-
-
-  ],
+  imports: [],
   templateUrl: './user-pagination.component.html',
-  styleUrl: './user-pagination.component.css'
+  styleUrl: './user-pagination.component.css',
+
+
+  
 })
 export class UserPaginationComponent {
 

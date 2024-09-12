@@ -14,13 +14,8 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
   styleUrl: './create-event-success.component.css'
 })
 export class CreateEventSuccessComponent {
+  closeBtn: boolean = true;
 
-  constructor( private router: Router){
-
-  }
-
-  Events(){
-    this.router.navigate(['/org-event']);
-  }
+ 
 
 }

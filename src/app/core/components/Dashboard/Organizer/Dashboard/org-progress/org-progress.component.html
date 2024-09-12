@@ -1,0 +1,8 @@
+<div class="progress-bar-container relative h-4 border rounded overflow-hidden">
+    <div class="text-center text-xs bg-red-600" 
+         [style.width.%]="progressPercentage" 
+         [style.border-radius]="progressPercentage === 100 ? '0.25rem 0.25rem 0.25rem 0.25rem' : '0.25rem 0 0 0.25rem'" 
+         text-white>
+      {{ progressPercentage | number: '1.0-0' }}%
+    </div>
+  </div>

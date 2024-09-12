@@ -14,7 +14,6 @@ import { InviterAdminService } from '../../../../../services/Admin/invite-admin/
     ReactiveFormsModule,
     CommonModule,RouterLink,
 
-
   ],
   templateUrl: './users-admin-invite.component.html',
   styleUrl: './users-admin-invite.component.css'
@@ -32,7 +31,6 @@ export class UsersAdminInviteComponent {
       role: new FormControl("", [Validators.required])
     });
   }
-
 
   onSubmit() {
 console.log(this.adminInvite)

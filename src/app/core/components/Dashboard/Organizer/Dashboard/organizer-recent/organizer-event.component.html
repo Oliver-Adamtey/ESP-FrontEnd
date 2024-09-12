@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="flex items-center justify-between mb-7">
+        <h2 class="font-medium text-lg text-slate-500">Recent Created Event</h2>
+        <a routerLink = '/org-event' class="cursor-pointer text-red-500">View All</a>
+    </div>
+
+
+
+<div class="event h-96  overflow-y-scroll custom-scroll">
+    <div class="item px-3" *ngFor="let record of records ">
+        <div class="flex items-center justify-between mb-5">
+            <div class="flex items-center gap-5">
+                <img [src]="record.eventImageUrl || '../../../../../../../assets/esp/dashboard/recent_img.png'" alt="" class="w-40 rounded">
+                <div class="flex flex-col w-96">
+                    <h3 class="font-semibold text-2xl text-slate-700">{{record.eventTitle }}</h3>
+                    <p class="text-red-500 text-xs font-semibold">{{ record.country }}, {{ record.city }}</p>
+                    <p class="text-base text-slate-500">{{ record.eventSummary }}</p>
+                </div>
+            </div>
+            <div class="icons flex gap-3">
+                <div class="flex flex-col gap-1 items-center">
+                    <div class="rounded-full w-10 h-10 bg-red-100 flex items-center justify-center">
+                        <img src="../../../../../../../assets/esp/dashboard/cedis.svg" alt="">
+                    </div>
+                    <p class="text-slate-400 text-sm font-normal">${{ record.virtualEventPrice || 'Free' }}</p>
+                </div>
+                <div class="flex flex-col gap-1 items-center">
+                    <div class="rounded-full w-10 h-10 bg-red-100 flex items-center justify-center">
+                        <img src="../../../../../../../assets/esp/dashboard/Icon2.svg" alt="">
+                    </div>
+                    <p class="text-slate-400 text-sm font-normal">{{ record.totalTicketAllocation || 'Free' }}</p>
+                </div>
+                <div class="flex flex-col gap-1 items-center">
+                    <div class="rounded-full w-10 h-10 bg-red-100 flex items-center justify-center">
+                        <img src="../../../../../../../assets/esp/dashboard/Icon1.svg" alt="">
+                    </div>
+                    <p class="text-slate-400 text-sm font-normal">{{ record.eventStartDate || 'Not Yet'}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>

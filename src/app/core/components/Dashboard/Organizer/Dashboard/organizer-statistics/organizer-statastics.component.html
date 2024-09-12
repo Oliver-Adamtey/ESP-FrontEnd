@@ -1,0 +1,32 @@
+<div class=" p-5">
+    <h2 class="font-medium text-2xl">Best Selling</h2>
+    <div class="flex items-center  gap-16">
+      <div class="chart">
+        <div class="chart relative">
+          <canvas baseChart
+                  [data]="doughnutChartData"
+                  [type]="doughnutChartType">
+          </canvas>
+        </div>
+      </div>
+      <div class="flex flex-col gap-10">
+        <div class="flex items-center gap-12 border-b w-72 ">
+          <h6 class="text-slate-600 font-normal text-sm cursor-pointer hover:font-semibold hover:text-slate-800 w-20 text-center" (click)="onTapClick('monthly')">Monthly</h6>
+          <h6 class="text-slate-600 font-normal text-sm cursor-pointer hover:font-semibold hover:text-slate-800 w-20 text-center" (click)="onTapClick('weekly')">Weekly</h6>
+          <h6 class="text-slate-600 font-normal text-sm cursor-pointer hover:font-semibold hover:text-slate-800 w-20 text-center" (click)="onTapClick('daily')">Daily</h6>
+        </div>
+        <p class="text-slate-400 font-light text-sm">{{constant.statisticsText}}</p>
+        <div class="flex items-center gap-10">
+          <div class="flex flex-col gap-3">
+            <div class="w-12 h-2 bg-orange-400"></div>
+            <h3 class="text-slate-700 text-sm">{{ticketsLeft}}</h3>
+            <p>Tickets left</p>
+          </div>
+          <div class="flex flex-col gap-3">
+            <div class="w-12 h-2 bg-orange-300"></div>
+            <h3 class="text-slate-700 text-sm">{{ticketsSold}}</h3>
+            <p>Ticket sold</p>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Reset } from '../../components/Interface/reset password/reset';
-import { environment } from '../../../../environments/environment';
+import { Reset } from '@interface/reset password/reset';
+import { environment } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root'

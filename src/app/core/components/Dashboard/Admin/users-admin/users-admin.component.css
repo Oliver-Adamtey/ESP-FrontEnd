@@ -1,0 +1,87 @@
+.custom-select {
+    -webkit-appearance: none; 
+    -moz-appearance: none; 
+    appearance: none; 
+    background-position: right center; 
+    background-repeat: no-repeat;
+    padding-right: 2.5rem; 
+}
+
+button.active {
+    background-color: #FFF4ED;
+    color: #BC1B06;
+    font-weight: bold;
+}
+
+.status-wrapper{
+    border-radius: 20px;
+}
+
+.active-button {
+    width: 100%;
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+  
+.hover-button {
+    width: 100%;
+    background-color: #e5e7eb; 
+    color: #111827; 
+}
+
+.clicked {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+.status-dot {
+    font-size: 1.5rem;
+}
+
+.bg-opacity-75 {
+    backdrop-filter: blur(5px);
+}
+
+.close:hover,
+.close:focus {
+    color: rgb(247, 10, 10);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tabs-container {
+    display: flex;
+    align-items: center;
+}
+
+.tab {
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s, border-bottom-color 0.3s;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    padding-bottom: 2px;
+}
+
+.tab.active .tab-text {
+    color: #bc1b06;
+    border-bottom: 2px solid #bc1b06;
+}
+
+.tab .tab-text {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.tab span + span {
+    margin-left: 8px;
+}
+
+.tab .rounded-full {
+    background-color: #FFF4ED;
+    padding: 0 12px; 
+    border-radius: 20px; 
+    display: inline-flex;
+    align-items: center;
+}

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-login-preload',
@@ -8,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './login-preload.component.css'
 })
 export class LoginPreloadComponent {
+
+  @Input() loadingMessage: string ='';
 
 }

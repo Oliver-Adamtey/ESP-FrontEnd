@@ -1,65 +1,59 @@
 <div
-  class="relative flex flex-col sm:h-[calc(100vh-2rem)] p-2 lg:h-[calc(100vh-2rem)] 2xl:h-[calc(100vh-2rem)]"
+  class="font-inter relative flex flex-col sm:h-[calc(100vh-2rem)] p-2 lg:h-[calc(100vh-2rem)] 2xl:h-[calc(100vh-2rem)]"
 >
   <div class="]">
-    <div class="dash border-[1px] rounded-t-lg p-3 pl-5 flex">
-      <div
-        class="dash-content-right flex size-7 ml-[960px] space-x-5 mt-2 2xl:flex 2xl:size-7 2xl:ml-[1600px] 2xl:space-x-5 2xl:mt-2"
-      >
-        <div class="absolute left-24 -mt-3 cursor-pointer" (click)="adminDash()">
-          <div class="flex items-center justify-center -ml-16 -mt-2">
-            <img
-              src="{{ OrgDasImg }}"
-              alt="Event Vista Logo"
-              class="mr-2 mt-0"
-            />
-            <h2 class="font-bold text-[24.59px] pt-3">
-              {{ Event }} <span class="text-red-700">{{ Vista }}</span>
-            </h2>
-          </div>
-        </div>
-
-        <img
-          src="{{ NavbarBell }}"
-          alt=""
-          class="block absolute right-60 -mt-3"
-        />
-        <img
-          src="{{ NavBarImg }}"
-          alt=""
-          class="block absolute right-44 -mt-3"
-        />
-
-        <p class="block absolute right-20">Olivia Rhye</p>
-
-        <button>
-          <img
-            src="{{ NavBarDownArrow }}"
-            alt=""
-            class="size-3 absolute right-10 top-8"
-          />
-        </button>
-      </div>
-    </div>
+    <app-organizer-create-event-bar></app-organizer-create-event-bar>
+   
 
     <div class="card-all m-0 flex mt-12 2xl:ml-[170px] -ml-[50px] mr-8">
       <div class="">
         <div
-          class="text-first-event flex justify-center items-center cursor-pointer"
-          (click)="confirmDiscard()"
-        >
-          <img
-            src="{{ EventProgressImg }}"
-            alt=""
-            class="relative ml-[380px]"
-          />
+        class="text-first-event flex justify-center items-center cursor-pointer"
+        (click)="showLogoutConfirmation()"
+      >
+        <img
+          src="{{ EventProgressImg }}"
+          alt=""
+          class="relative ml-[380px] xl:mt-16"
+        />
 
-          <p
-            class="text-[#BC1B06] absolute font-normal text-[14px] left-[370px] top-[115px] 2xl:left-[600px]"
-          >
-            {{ BackToEvent }}
-          </p>
+        <p
+          class="xl:pb-5 text-[#BC1B06] absolute font-normal text-[14px] left-[370px] top-[115px] 2xl:left-[600px] xl:mb-10"
+        >
+          {{ BackToEvent }}
+        </p>
+      </div>
+
+
+        <div
+        *ngIf="isLogoutModalVisible"
+        class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75 z-50"
+      >
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+          <div class="logout text-left">
+            <h3 class="mb-2">Discard</h3>
+            <p>
+              Are you sure you want to discard? By discarding , <br />
+              you will be redirected to the event page<br />
+            </p>
+          </div>
+          <div class="mt-4 flex justify-center">
+            <button
+              (click)="cancelLogout()"
+              class="bg-white border border-gray-400 text-gray-800 py-2 px-4 rounded-lg mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              (click)="confirmLogout()"
+              class="bg-red-600 text-white py-2 px-4 rounded-lg"
+            >
+              Discard
+            </button>
+          </div>
         </div>
+      </div>
+
       </div>
     </div>
 
@@ -696,7 +690,7 @@
                   </div>
                 </div>
 
-                <div class="mt-5 2xl:w-[800px] w-[620px] mb-20 absolute">
+                <div class="mt-5 2xl:w-[820px] w-[620px] mb-20 absolute">
                   <div
                     class="btns-success flex -mt-[200px] ml-[375px] 2xl:ml-[570px] space-x-3 right-[350px] mb-20 pt-1"
                   >
@@ -913,7 +907,7 @@
           </div>
         </div> -->
 
-                <div class="mt-5 2xl:w-[800px] w-[620px] mb-20 absolute">
+                <div class="mt-5 2xl:w-[820px] w-[620px] mb-20 absolute">
                   <div
                     class="btns-success flex -mt-[200px] ml-[375px] 2xl:ml-[570px] space-x-3 right-[350px] mb-20 pt-1"
                   >
@@ -1069,77 +1063,277 @@
                   <div class="btn-all space-x-2">
                     <button
                       type="button"
-                      class="border-[#BC1B06] bg-[#FFF4ED] border-[1px] text-black p-2.5 cursor-pointer font-normal rounded-md max-w-max"
+                      [ngClass]="{
+                        'border-[#BC1B06] bg-[#FFF4ED]': isFreeSelected,
+                        'bg-transparent': !isFreeSelected
+                      }"
+                      class="border-[1px] text-black p-2.5 cursor-pointer font-normal rounded-md max-w-max"
+                      (click)="toggleFreeForm(true)"
                     >
                       Free
                     </button>
+
                     <button
                       type="button"
-                      class="bg-transparent border-[1px] text-black p-2.5 cursor-pointer font-normal rounded-md max-w-max"
-                      (click)="togglePaidForm()"
+                      [ngClass]="{
+                        'border-[#BC1B06] bg-[#FFF4ED]': isPaidSelected,
+                        'bg-transparent': !isPaidSelected
+                      }"
+                      class="border-[1px] text-black p-2.5 cursor-pointer font-normal rounded-md max-w-max"
+                      (click)="togglePaidForm(true)"
                     >
                       Paid
                     </button>
+
                   </div>
 
-                  <div *ngIf="paidFormVisible" class="mt-4">
-                    <div class="mt-5 block">
-                      <div class="labels flex 2xl:space-x-[330px] space-x-60">
-                        <label
-                          for="name"
-                          class="block mb-2 text-sm font-medium text-gray-900"
-                          >Price/Amount*</label
-                        >
-                        <label
-                          for="orgEmail"
-                          class="block mb-2 text-sm font-medium text-gray-900"
-                          >Ticket type*</label
-                        >
-                      </div>
+                  <div *ngIf="isPaidSelected" class="mt-4 mb-5">
+                    <!-- here ... -->
+                    <div
+                      *ngFor="let ticket of tickets; let i = index"
+                      class="bg-[#f2f3f5] pt-5 pb-5 pl-10 pr-10 xl:w-[700px] 2xl:w-[800px] rounded-lg border-2 mb-5"
+                    >
+                      <div>
+                        <div class="mt-5 block">
+                          <h3
+                            class="w-[53px] h-[32px] font-inter font-semibold"
+                          >
+                            Tier {{ i + 1 }}
+                          </h3>
 
-                      <div class="flex 2xl:w-[800px] w-[620px]">
-                        <input
-                          type="number"
-                          id="name"
-                          class="pl-3 shadow-sm bg-white-50 border border-gray-300 .tagInput = ''; text-gray-900 text-sm rounded-lg block w-[620px] p-1.5"
-                          placeholder="Enter price or amount for ticket here"
-                          formControlName="eventPrice"
-                        />
+                          <div class="mb-3">
+                            <div
+                              class="labels flex 2xl:space-x-[280px] xl:space-x-[220px] space-x-60"
+                            >
+                              <label
+                                for="name"
+                                class="block mb-2 text-sm font-medium text-gray-900"
+                                >Ticket name*</label
+                              >
+                              <label
+                                for="orgEmail"
+                                class="block mb-2 text-sm font-medium text-gray-900"
+                                >Ticket price*</label
+                              >
+                            </div>
 
-                        <select
-                          id="name"
-                          class="pl-3 ml-2 shadow-sm bg-white-50 border border-gray-300 relative text-gray-900 text-sm rounded-lg block w-[620px] p-1.5"
-                          formControlName="ticketType"
-                        >
-                          <option value="VIP" [value]="'VIP'">VIP</option>
-                          <option value="V" [value]="'Regular'">Regular</option>
-                        </select>
-                      </div>
-                    </div>
+                            <div class="flex 2xl:w-[800px] w-[620px]">
+                              <input
+                                type="text"
+                                id=""
+                                class="pl-3 shadow-sm bg-white-50 border border-gray-300 .tagInput = ''; text-gray-900 text-sm rounded-lg block xl:w-[330.5px] 2xl:w-[350px] p-1.5 mb-2 mr-4"
+                                placeholder="Enter name of ticket here"
+                                formControlName="name"
+                              />
+                              <input
+                                type="number"
+                                id=""
+                                class="pl-3 shadow-sm bg-white-50 border border-gray-300 .tagInput = ''; text-gray-900 text-sm rounded-lg block 2xl:w-[350px] xl:w-[330.5px] w-[310px] p-1.5 mb-2 mr-4"
+                                placeholder="Enter price of ticket here"
+                                formControlName="price"
+                              />
+                            </div>
+                          </div>
 
-                    <div class="mt-5 w-full">
-                      <div class="labels flex 2xl:space-x-[330px] space-x-60">
-                        <label
-                          for="name"
-                          class="block mb-2 text-sm font-medium text-gray-900"
-                          >Quantity*</label
-                        >
-                      </div>
+                          <div class="mb-3">
+                            <div
+                              class="labels flex 2xl:space-x-[280px] xl:space-x-[210px] space-x-60"
+                            >
+                              <label
+                                for="name"
+                                class="block mb-2 text-sm font-medium text-gray-900"
+                                >Ticket quantity*</label
+                              >
+                              <label
+                                for="orgEmail"
+                                class="block mb-2 text-sm font-medium text-gray-900"
+                                >Reserved tickets</label
+                              >
+                            </div>
+                          </div>
 
-                      <div class="flex 2xl:w-[800px] w-[620px]">
-                        <input
-                          type="number"
-                          id=""
-                          class="pl-3 shadow-sm bg-white-50 border border-gray-300 text-gray-900 text-sm rounded-lg block 2xl:w-[800px] w-[620px] p-1.5"
-                          placeholder="Enter Ticket quantity here*"
-                          formControlName="ticketQuantity"
-                        />
+                          <div class="flex 2xl:w-[800px] w-[620px] mt-">
+                            <input
+                              type="number"
+                              id=""
+                              class="pl-3 shadow-sm bg-white-50 border border-gray-300 .tagInput = ''; text-gray-900 text-sm rounded-lg block 2xl:w-[350px] xl:w-[330.5px] w-[310px] p-1.5 mb-2 mr-4"
+                              placeholder="Enter ticket quantity here"
+                              formControlName="allocation"
+                            />
+                            <input
+                              type="number"
+                              id=""
+                              class="pl-3 shadow-sm bg-white-50 border border-gray-300 .tagInput = ''; text-gray-900 text-sm rounded-lg block 2xl:w-[350px] xl:w-[330.5px] w-[310px] p-1.5 mb-2 mr-4"
+                              placeholder="Enter reserved tickets here"
+                              formControlName="reserveAllocation"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="mb-5">
+                          <!-- src/app/accordion/accordion.component.html -->
+                          <div class="accordion">
+                            <div class="flex space-x-2">
+                              @if(isFormVisible){
+                              <img
+                                src="assets/esp/dashboard/up.png"
+                                alt=""
+                                class="size-4"
+                              />
+
+                              } @else if (!isFormVisible) {
+                              <img
+                                src="assets/esp/dashboard/down1.png"
+                                alt=""
+                                class="size-4"
+                              />
+
+                              }
+                              <!-- <img src="assets/esp/dashboard/down1.png" alt="" class="size-4"> -->
+                              <button
+                                type="button"
+                                class=" accordion-button xl:-mt-1 text-[#E04F16]"
+                                (click)="toggleAccordion()"
+                              >
+                                Configure form rule
+                              </button>
+                            </div>
+
+                            <div
+                              class="accordion-content"
+                              [style.display]="isFormVisible ? 'block' : 'none'"
+                            >
+                              <h3
+                                class="w-fit h-[32px] font-inter font-semibold mt-5"
+                              >
+                                Configure form rules
+                              </h3>
+                              <p class="text-[14px] font-medium">
+                                Configure rules for what happens after this form
+                                is submitted
+                              </p>
+
+                              <div>
+                                <div
+                                  *ngFor="let rule of rules; let i = index"
+                                  class="flex flex-wrap 2xl:w-[400px] w-[620px] mt-4"
+                                >
+                                  <div
+                                    class="flex 2xl:w-[200px] w-full items-center"
+                                  >
+                                    <div class="mt-0 mr-2">If</div>
+                                    <select
+                                      id="ruleCategory{{ i }}"
+                                      class="pl-3 shadow-sm bg-white-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                      2xl:w-[500px] xl:w-[330.5px] p-1.5 mb-2 mr-4"
+                                      formControlName="discountVariable"
+                                    >
+                                      <option value="Age">Age</option>
+                                      <option value="Gender">Gender</option>
+                                      <option value="Ticket">Ticket</option>
+                                    </select>
+
+                                    <select
+                                      id="condition{{ i }}"
+                                      class="pl-3 shadow-sm bg-white-50 border border-gray-300 text-gray-900 text-sm rounded-lg 2xl:w-[400px] xl:w-[330.5px] w-[310px] p-1.5 mb-2 mr-4"
+                                      formControlName="discountRule"
+                                    >
+                                      <option value="Equals (=)" >
+                                        Equals (=)
+                                      </option>
+                                      <option value="LessThanOrEquals<=" >
+                                        LessThanOrEquals
+                                      </option>
+                                      <option value="GreaterThanOrEquals (>=)" >
+                                        GreaterThanOrEquals
+                                      </option>
+
+                                    </select>
+
+                                    <input
+                                      type="text"
+                                      id="ruleAge{{ i }}"
+                                      class="pl-3 shadow-sm bg-white-50 border border-gray-300 text-gray-900 text-sm rounded-lg 2xl:w-[100px] xl:w-[105px] w-[210px] p-1.5 mb-2 mr-4"
+                                      placeholder="18"
+                                      formControlName="conditionValue"
+                                    />
+
+                                    <select
+                                      id="amountOff{{ i }}"
+                                      class="pl-3 shadow-sm bg-white-50 border border-gray-300 text-gray-900 text-sm rounded-lg 2xl:w-[400px] xl:w-[330.5px] w-[310px] p-1.5 mb-2 mr-4"
+                                      formControlName="discountType"
+                                    >
+                                      <option value="Amount off">Amount off</option>
+                                      <option value="Discount off">Discount off</option>
+                                      </select>
+
+                                    <input
+                                      type="number"
+                                      id="discount{{ i }}"
+                                      class="pl-3 shadow-sm bg-white-50 border border-gray-300 text-gray-900 text-sm rounded-lg 2xl:w-[200px] xl:w-[105px] w-[310px] p-1.5 mb-2 mr-4"
+                                      placeholder="Ghc200"
+                                      formControlName="discountValue"
+                                    />
+
+                                    <img
+                                      src="assets/esp/dashboard/close.png"
+                                      alt=""
+                                      class="size-3 cursor-pointer"
+                                      (click)="removeRule(i)"
+                                    />
+                                  </div>
+                                </div>
+
+                                <div class="flex space-x-2 mt-5 mb-5">
+                                  <img
+                                    src="assets/esp/dashboard/add_rule.png"
+                                    alt=""
+                                    class="size-4"
+                                  />
+                                  <button
+                                    type="button"
+                                    (click)="addRule()"
+                                    class="accordion-button text-[#E04F16] font-semibold text-[14px] "
+                                  >
+                                    Add Rule
+                                  </button>
+                                </div>
+
+                                <hr
+                                  class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"
+                                />
+
+                                <div
+                                  class="2xl:ml-72 xl:ml-64 flex items-center justify-center space-x-2 mt-5 mb-5 bg-white border-gray-300 border-2 w-[126px] p-1 rounded-lg"
+                                >
+                                  <img
+                                    src="assets/esp/dashboard/plus_b.png"
+                                    alt=""
+                                    class="size-4 mt-1"
+                                  />
+                                  <button
+                                    type="button"
+                                    class=" accordion-button text-black font-semibold text-[14px]
+                                    xl:mr-50 "
+                                    (click)="addTicket()"
+                                  >
+                                    Add ticket
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- accordion ends here -->
+                        </div>
                       </div>
                     </div>
                   </div>
+
+
                 </div>
 
-                <div class="mt-5 2xl:w-[800px] w-[620px] mb-20">
+                <div class="mt-5 2xl:w-[820px] w-[620px] mb-20">
                   <div
                     class="btns-success flex -mt-[200px] ml-[375px] 2xl:ml-[570px] space-x-3 right-[350px] mb-20 pt-1"
                   >
@@ -1159,6 +1353,7 @@
                       Save & continue
                     </button>
                   </div>
+
                 </div>
               </div>
             </div>
@@ -1465,7 +1660,7 @@
                   </div>
                 </div>
 
-                <div class="mt-5 2xl:w-[800px] w-[620px] mb-20">
+                <div class="mt-5 2xl:w-[820px] w-[620px] mb-20">
                   <div
                     class="btns-success flex -mt-[200px] ml-[375px] 2xl:ml-[570px] space-x-3 right-[350px] mb-20 pt-1"
                   >
@@ -1476,17 +1671,18 @@
                     >
                       Previous
                     </button>
-
                     <div *ngIf="publishNow || scheduleForm">
                       <button
                         type="submit"
-                        class="bg-[#BC1B06] p-2.5 mt-64 cursor-pointer clic text-white font-normal rounded-md w-[164px]"
+                        class="bg-[#BC1B06] p-2.5 mt-64 cursor-pointer text-white font-normal rounded-md w-[164px]"
                       >
-                        Publish
+                        @if(eventCreated){
+
+                        <app-preload></app-preload>
+
+                        } @else if (isError) { Error } @else { Publish }
                       </button>
-                      <!-- <button type="submit" disabled class="bg-[#BC1B06] p-2.5 mt-64 cursor-pointer clic text-white font-normal rounded-md w-[164px]">
-          Publish
-        </button> -->
+
                     </div>
                   </div>
                 </div>

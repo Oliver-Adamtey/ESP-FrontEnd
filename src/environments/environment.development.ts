@@ -1,44 +1,152 @@
-export const environment = {
 
+
+
+export const environment = {
   development: true,
 
+   BASE_URL: 'https://esp-backend.amalitech-dev.net/api/v1',
+
+  // BASE_URL: 'https://3f57072f-8050.euw.devtunnels.ms/api/v1',
+
+  get LOGIN_URL() {
+    return `${this.BASE_URL}/auth/login`;
+  },
+
+  get SIGN_UP_URL() {
+    return `${this.BASE_URL}/auth/signup`;
+  },
+
+  get CREATE_EVENT_URL() {
+    return `${this.BASE_URL}/event-vista/create-event`;
+  },
+
+  get ADMIN_CREATE_EVENT_URL() {
+    return `${this.BASE_URL}/admin/create-event`;
+  },
+
+  get ADMIN_READ_ALL_EVENT_URL() {
+    return `${this.BASE_URL}/admin/read-all`;
+  },
+
+  get ADMIN_GET_PROFILE() {
+    return `${this.BASE_URL}/shared/view-profile`;
+  },
+
+  get ADMIN_CREATE_PROFILE() {
+    return `${this.BASE_URL}/profile/create-admin-profile`;
+  },
+
+  get ADMIN_ACTIVATE_USER() {
+    return `${this.BASE_URL}/admin/activate`;
+  },
+
+  get ADMIN_DEACTIVATE_USER() {
+    return `${this.BASE_URL}/admin/deactivate`;
+  },
+
+  get RESET_URL() {
+    return `${this.BASE_URL}/auth/reset-password`;
+  },
+
+  get FORGOT_PASS_URL() {
+    return `${this.BASE_URL}/auth/verify-mail`;
+  },
+
+  get ORG_LOGOUT_URL() {
+    return `${this.BASE_URL}/auth/logout`;
+  },
+
+  get GET_ALL_EVENTS() {
+    return `${this.BASE_URL}/test/all-events`;
+  },
+
+  get TOKEN_URL() {
+    return `${this.BASE_URL}/auth/verifyOtp`;
+  },
+
+  get CREATE_ADMIN() {
+    return `${this.BASE_URL}/admin/createAdmin`;
+  },
+
+  get SEND_ADMIN_INVITE() {
+    return `${this.BASE_URL}/admin/createAdmin`;
+  },
+
+  get CHANGE_PASSWORD() {
+    return `${this.BASE_URL}/auth/activate-account`;
+  },
+
+  get CHANGE_ADMIN_PROFILE() {
+    return `${this.BASE_URL}/admin/create-profile`;
+  },
+
+  get GET_ALL_ORG_EVENTS_CREATED() {
+    return `${this.BASE_URL}/event-vista/read-all`;
+  },
+
+  get GET_ALL_USERS() {
+    return `${this.BASE_URL}/admin/all-users`;
+  },
+
+  get GET_ALL_USERS_ORG() {
+    return `${this.BASE_URL}/organizer/users`;
+  },
+
+  get ORG_BUSINESS_INFORMATION() {
+    return `${this.BASE_URL}/unapproved-organizer/create-org-profile`;
+  },
+  get ORG_USER_INVITE() {
+    return `${this.BASE_URL}/organizer/invite-user`;
+  },
+  get ORG_USER_BY_STATUS() {
+    return `${this.BASE_URL}/organizer/filterUsers`;
+  },
+
+  get ORG_EVENTS_FILTERING() {
+    return `${this.BASE_URL}/organizer/filters`;
+  },
+  get ORG_PIE_CHART() {
+    return `${this.BASE_URL}/`;
+  },
+
+  get ORG_DEACTIVATE() {
+    return `${this.BASE_URL}/organizer/deactivate-user`;
+  },
 
 
-  // LOGIN_URL: 'https://esp-backend.amalitech-dev.net/api/v1/auth/login',
-  LOGIN_URL: 'https://3f57072f-8080.euw.devtunnels.ms/api/v1/auth/login',
+  get ORG_ACTIVATE() {
+    return `${this.BASE_URL}/organizer/activate-user`;
+  },
 
-  SIGN_UP_URL: 'https://esp-backend.amalitech-dev.net/api/v1/auth/signup',
-  CREATE_EVENT_URL: 'https://esp-backend.amalitech-dev.net/api/v1/event-vista/create-event',
-  RESET_URL: 'https://esp-backend.amalitech-dev.net/api/v1/auth/reset-password',
-  FORGOT_PASS_URL: 'https://esp-backend.amalitech-dev.net/api/v1/auth/verify-mail',
-  ORG_LOGOUT_URL: 'https://esp-backend.amalitech-dev.net/api/v1/auth/logout',
-  GET_ALL_EVENTS: 'https://esp-backend.amalitech-dev.net/api/v1/test/all-events',
+  get ORG_DELETE() {
+    return `${this.BASE_URL}/organizer/delete-user`;
+  },
 
-  TOKEN_URL: 'https://esp-backend.amalitech-dev.net/api/v1/auth/verifyOtp',
+  get ORG_CREATE_PROFILE() {
+    return `${this.BASE_URL}/profile/create-organizer-profile`;
+  },
 
-  CREATE_ADMIN: 'https://esp-backend.amalitech-dev.net/api/v1/admin/createAdmin',
-  SEND_ADMIN_INVITE: 'https://esp-backend.amalitech-dev.net/api/v1/admin/send-invite',
-  CHANGE_PASSWORD: 'https://esp-backend.amalitech-dev.net/api/v1/auth/activate-account',
-  CHANGE_ADMIN_PROFILE: 'https://esp-backend.amalitech-dev.net/api/v1/admin/create-profile',
+  get ORG_GET_PROFILE() {
+    return `${this.BASE_URL}/shared/view-profile`;
+  },
 
-  GET_ALL_ORG_EVENTS_CREATED: 'https://esp-backend.amalitech-dev.net/api/v1/event-vista/read-all',
+  get ORG_EVENTS_SEARCH_ATTENDEES() {
+    return `${this.BASE_URL}/event-vista/search-attendees`;
+  },
 
-  GET_ALL_USERS: 'https://esp-backend.amalitech-dev.net/api/v1/admin/users',
+  get ORG_MEETING_LINK() {
+    return `${this.BASE_URL}/event-vista/start`;
+  },
 
-
-  GET_ALL_USERS_ORG: 'https://3f57072f-8080.euw.devtunnels.ms/api/v1/organizer/users',
 
   ORG_SETTINGS: '',
-
   ORG_INVITE: '',
   ADMIN_INVITE: '',
   ORGANIZER_TOKEN: 'Token',
   ADMIN_TOKEN: 'adminToken',
   USER_ID: 'userId',
   RESET_EMAIL: 'resetEmail',
-  ATTENDEE_TOKEN: 'attend'
-
-
-
+  ATTENDEE_TOKEN: 'Token',
+  TOKEN_ENCRYPTION_KEY: 'ESP_FRONTEND'
 
 };

@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SignupResponse, signupForm } from '../../components/Interface/registration/signup';
-import { environment } from '../../../../environments/environment';
+import { environment } from '@environments/environment';
+import { PageResponse, SignupForm } from '@interface/registration/login-register';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +14,8 @@ export class RegistrationService  {
 
   constructor(private httpClient: HttpClient) {}
 
-  signup(data: signupForm): Observable<any> {
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json')
-      .set('Access-Control-Allow-Origin', 'Content-Type');
-
-    return this.httpClient.post<SignupResponse>(this.signupUrl, data, { headers });
+  signup(data: SignupForm): Observable<PageResponse> {
+    return this.httpClient.post<PageResponse>(this.signupUrl, data);
   }
 
 

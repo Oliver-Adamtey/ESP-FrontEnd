@@ -1,24 +1,28 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { TokenService } from '../../services/token/token.service';
-import { environment } from '../../../../environments/environment';
+import { TokenService } from '@services/token/token.service';
+import { environment } from '@environments/environment';
+import { ErrorComponent } from "@component/signup-error-handling/error/error.component";
+import { SuccessComponent } from "@component/login-error-handling/success/success.component";
+import { NotificationService } from '@notifications//notification.service';
+import { PageResponse } from '@interface/registration/login-register';
 
 @Component({
-  selector: 'app-token',
-  standalone: true,
-  imports: [
-
-    ReactiveFormsModule,
-    CommonModule,
-    RouterLink,
-    FormsModule,
-
-  ],
-  templateUrl: './token.component.html',
-  styleUrl: './token.component.css'
+    selector: 'app-token',
+    standalone: true,
+    templateUrl: './token.component.html',
+    styleUrl: './token.component.css',
+    imports: [
+        ReactiveFormsModule,
+        CommonModule,
+        RouterLink,
+        FormsModule,
+        ErrorComponent,
+        SuccessComponent
+    ]
 })
 export class TokenComponent {
 
@@ -28,17 +32,34 @@ export class TokenComponent {
   userEmail: string | null;
   tokenInput?: number
 
+  isUnauthorized: boolean = false;
+  isToken: boolean = false;
+  isExpired: boolean = false
+  invalidToken: boolean = false
+  isEmail: boolean = false
+  isError: boolean = false
+
+  success: string = 'OTP Verfied successfully'
+  expired: string = 'Expired Token'
+  errorMessage: string = 'Invalid Token'
+  enterValue: string = 'Enter Token key'
+  invalid: string = 'Enter Token key'
+  Error: string = 'Server is down. Please try again late'
 
 
 
 
-  constructor(private tokenservice: TokenService, private router: Router) {
+
+  emailRequired: string = 'Email is not Provided '
+
+  constructor(private tokenservice: TokenService, private router: Router,   private notificationService: NotificationService,
+  ) {
     this.tokenForm = new FormGroup({
       token: new FormControl("", [Validators.required]),
 
     });
 
-    this.userEmail = localStorage.getItem(environment.RESET_EMAIL);
+    this.userEmail = sessionStorage.getItem(environment.RESET_EMAIL);
 
 
   }
@@ -46,55 +67,48 @@ export class TokenComponent {
   onSubmit() {
     const token = parseInt(this.tokenForm.value.token);
 
-    const data= {
+    const data = {
         otp: token,
         email: this.userEmail
     };
 
     console.log(data);
 
+    if (!this.tokenForm.get('token')?.value) {
+        this.isToken = true;
+        return;
+    }
+
+    if(!this.tokenForm.valid){
+alert('Token field');
+    }
+
     if (this.tokenForm.valid) {
-        this.isSubmitted = true;
+
 
         if (this.userEmail) {
             this.tokenservice.sendTokenData(data).subscribe({
                 next: (response: any) => {
-                    console.log('Token sent successfully:', response);
-                    if (response.status === 200) {
-                        alert('OTP verified successfully');
-                        this.router.navigateByUrl('/reset');
-                    } else {
-                        console.error('Unexpected status code:', response.status);
-                    }
-                },
-
-
-                error: (error: any) => {
-                    console.error('Error sending token:', error);
-                    if (error && error.status === 200) {
-                      alert('Account Activated Successfully');
+                    this.notificationService.showSuccess('Token sent successfully');
+                    setTimeout(() => {
                       this.router.navigateByUrl('/reset');
+                    }, 2000);
+                },
+                error: (error: HttpErrorResponse) => {
+                  const pageResponse: PageResponse = error.error;
+                  this.notificationService.showError(pageResponse.message);
 
-                    } else if (error && error.status === 417) {
-                        alert('Expired token');
-                    }
-
-
-                    else if (error && error.error && error.error.businessErrorDescription === "Internal error, contact the Admin") {
-                        alert('Invalid Token');
-                    } else {
-                        alert('Internal error, contact the Admin');
-                    }
                 }
             });
         } else {
             console.error('User email is not provided.');
-            alert('User email is not provided')
+            this.isEmail = true;
         }
     } else {
-        alert('Token is required.');
+
     }
 }
+
 
 
 

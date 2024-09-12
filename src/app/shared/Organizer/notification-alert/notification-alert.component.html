@@ -1,0 +1,141 @@
+
+<div class="">
+
+
+  <div
+    class=" dash-content-right flex size-7 ml-[300px] space-x-5 2xl:flex 2xl:size-7 2xl:ml-[530px] 2xl:space-x-5"
+  >
+  <div class="cursor-pointer" (click)="toggleBellCard()">
+    <div class="w-6 h-6 bg-[#D92D20] rounded-full absolute top-2 right-72 z-10 ">  <span class="ml-1 top-5 text-[12px] text-white">{{getUnreadNotificationCount()}}</span></div>
+
+    <img
+      src="{{ NavbarBell }}"
+      alt=""
+      class="block absolute right-auto left-[1250px] xl:top-4 2xl:-mt-1 xl:-mt-2 text-[14px] font-medium"
+    />
+
+
+  </div>
+
+
+
+      <img
+      src="{{ NavBarImg }}"
+      alt=""
+      class="block absolute w-10 h-10 rounded-full right-auto left-[1285px] cursor-pointer 2xl:mt-1 xl:top-2"
+      (click)="toggleCard()"
+    />
+    <p (click)="toggleCard()" class="cursor-pointer   absolute right-20 top-8 2xl:-mt-2 text-[16px] font-medium xl:-mt-3">{{ navBarName }}
+    </p>
+
+    <button>
+      @if(toggle){
+        <img
+        src="{{ NavBarDownArrow }}"
+        alt=""
+        class="size-5 absolute 2xl:right-10 2xl:top-6 xl:top-5 xl:right-10 rotate-180 "
+        (click)="toggleCard()"
+      />
+      } @else {
+        <img
+        src="{{ NavBarDownArrow }}"
+        alt=""
+        class="size-5 absolute 2xl:right-10 2xl:top-6 xl:top-5 xl:right-10 "
+        (click)="toggleCard()"
+      />
+      }
+
+    </button>
+  </div>
+
+
+  @if (profile) {
+
+    <div class="block  -mt-24 z-40 -right-0 absolute shadow-lg p-0 m-0">
+      <div
+        class="bg-white shadow-md rounded-lg p-6 absolute top-20 right-20 w-72 flex"
+      >
+        <img
+        src="{{NavBarImg}}"
+        alt="Navbar Image"
+        class="w-10 h-10 rounded-full mr-2"
+      />
+
+
+      </div>
+      <div class="w-full border-1"></div>
+    </div>
+
+    }
+  @if (bell) {
+
+
+    <div class="block mt-0 z-40 right-72 absolute shadow-lg p-0 m-0">
+
+
+      <div id="dropdownNotification" class="z-20 w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-800 dark:divide-gray-700" aria-labelledby="dropdownNotificationButton">
+        <a  class="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
+          <div class="inline-flex space-x-32 p-2">
+
+            <p>Notifications</p>
+            <div class="flex cursor-pointer" (click)="markAllRead()">
+              <img class="w-8 pr-3" src="assets/esp/check-mark.png">
+              <p>Mark all as read</p>
+            </div>
+          </div>
+
+        </a>
+      <div class="cursor-pointer divide-y pb-5 pt-5 divide-gray-100 dark:divide-gray-700">
+            <div class="w-full ps-3">
+              @if(UnreadNotificationData.length > 0){
+              <div *ngFor="let item of UnreadNotificationData" (click)="ReadNotification(item.id)" class="flex mb-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 text-sm dark:text-gray-400">
+                <div class="flex-shrink-0 p-3 border-gray-300">
+                  <img class="rounded-full w-10 h-10" src="assets/esp/logo.png" alt="Jese image">
+                </div>
+                <div>
+                  <div class="flex space-x-14">
+                    <h3 class=" font-semibold text-[16px] text-black mb-2 mt-2">{{item.title}}</h3>
+                    <h3 class="mb-0 font-normal text-[12px] text-black">{{item.timeAgo}}</h3>
+                  </div>
+
+                {{item.message}}
+                <div class="text-xs text-blue-600 dark:text-blue-500"></div>
+
+                </div>
+
+              </div>
+            }@else {
+              <div class="flex mb-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 text-sm dark:text-gray-400">
+                <div class="flex-shrink-0 p-3 border-gray-300">
+                  <img class="rounded-full w-10 h-10" src="assets/esp/logo.png" alt="Jese image">
+                </div>
+                <div>
+                  <div class="flex space-x-14">
+                    <h3 class=" font-semibold text-[16px] text-black mb-2 mt-2">No Notification </h3>
+                    <h3 class="mb-0 font-normal text-[12px] text-black">0 second ago</h3>
+                  </div>
+
+                  No Notfication message yet delivered
+                  <div class="text-xs text-blue-600 dark:text-blue-500"></div>
+
+                </div>
+
+              </div>
+            }
+            </div>
+
+        </div>
+        <a  class="block py-2 text-sm font-medium text-left text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
+          <div class="inline-flex text-left pl-5 cursor-pointer " (click)="viewAllNotification()">
+
+            View all notifications
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    }
+
+
+</div>

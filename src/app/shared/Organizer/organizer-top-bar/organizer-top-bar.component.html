@@ -1,0 +1,195 @@
+
+<div class="dash-content-left h-[60px]">
+  <h2 class="font-semibold text-[24px]">{{ heading }}</h2>
+  <p class="">{{ sub_Heading }}</p>
+
+
+
+  <div class="ml-[1350px] flex grid-cols-3 -space-x-3 gap-1 -mt-10 mr-auto">
+    <div class="">
+        <div class="cursor-pointer" (click)="toggleBellCard()" #bellCard class="bell-card">
+            <div class="w-6 h-6 bg-[#D92D20] rounded-full absolute top-2 right-72 z-10">
+                <span class="ml-1 top-5 text-[12px] text-white">{{ getUnreadNotificationCount() }}</span>
+            </div>
+
+            <img src="{{ NavbarBell }}" alt="" class="block absolute right-auto left-[1250px] xl:top-4 2xl:-mt-1 xl:-mt-2 text-[14px] font-medium" />
+        </div>
+    </div>
+
+    <div (click)="toggleCard()" #bellCardProfile>
+
+        <div class="">
+            <div>
+                <img src="{{ NavBarImg }}" alt="" class="block absolute w-10 h-10 rounded-full right-auto left-[1310px] cursor-pointer 2xl:mt-1 xl:top-2" />
+            </div>
+        </div>
+
+        <div class="cursor-pointer  flex text-[16px] font-medium xl:-mt-3">
+            <p class="ml-auto truncate mt-1" title="{{ navBarName }}">
+                {{ navBarName }}
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-12">
+        <button>
+            @if(toggle){
+                <img src="{{ NavBarDownArrow }}" alt="" class="size-5 absolute 2xl:right-10 2xl:top-6 xl:top-5 xl:right-10 rotate-180" (click)="toggleCard()" />
+            } @else {
+                <img src="{{ NavBarDownArrow }}" alt="" class="size-5 absolute 2xl:right-10 2xl:top-6 xl:top-5 xl:right-10" (click)="toggleCard()" />
+            }
+
+        </button>
+    </div>
+
+</div>
+
+  @if (profile) {
+
+    <div class="block  -mt-24 z-40 -right-0 absolute shadow-lg p-0 m-0">
+      <div
+        class="bg-white shadow-md rounded-lg p-6 absolute top-20 right-20 w-72 flex"
+      >
+        <img
+        src="{{NavBarImg}}"
+        alt="Navbar Image"
+        class="w-10 h-10 rounded-full mr-2"
+      />
+
+
+
+        <div class="relative -space-y-6 mb-8">
+          <h3  class="text-lg  medium 2xl:text-[16px] 2xl:font-medium text-[#344054]"
+          >
+            {{ navBarName  }}
+          </h3>
+          <br />
+          <h5 class="w-fit text-[10px] text-gray-500 2xl:mb-12" id="email">
+            {{email}}
+          </h5>
+
+          <div class="absolute top-20 bg-gray-200 border-0 -left-16 right-0 w-[270px] h-0.5 ">
+
+          </div>
+        </div>
+
+        <button
+          class="absolute -bottom-5 left-6 flex"
+          (click)="accountSettings()"
+        >
+          <div class="flex mb-8">
+            <img
+              src="assets/esp/dashboard/settings.png"
+              class="flex w-4 h-4 mt-0 mr-2 bottom-11"
+            />
+
+
+            <h3 class="flex text-xs text-gray-500 pl-5" style="font-size: 14px">
+              Account settings
+            </h3>
+          </div>
+        </button>
+      </div>
+      <div class="w-full border-1"></div>
+    </div>
+
+    }
+
+  @if (bell) {
+
+
+    <div class="block mt-0 z-40  right-72 absolute shadow-lg p-0 m-0">
+
+
+      <div id="dropdownNotification" class="z-20 w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow " aria-labelledby="dropdownNotificationButton">
+        <a  class="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100  dark:text-white">
+          <div class="inline-flex space-x-32 p-2">
+
+            <p>Notifications</p>
+            <div class="flex cursor-pointer ml-5" (click)="markAllRead()">
+              <img class="w-8 pr-3" src="assets/esp/check-mark.png">
+              <p>Mark all as read</p>
+            </div>
+          </div>
+
+        </a>
+      <div class="cursor-pointer divide-y pb-5 pt-5 divide-gray-100 dark:divide-gray-700">
+            <div class="w-full ps-3">
+              @if(UnreadNotificationData.length > 0){
+              <div *ngFor="let item of UnreadNotificationData" (click)="ReadNotification(item.id)" class="flex mb-2 -ml-3 hover:bg-gray-100  text-gray-500 text-sm ">
+                <div class="flex-shrink-0 p-3 border-gray-300">
+                  <img class="rounded-full border-2 p-2 w-10 h-10" src="assets/esp/logo.png" alt="Jese image">
+                </div>
+                <div>
+                  <div class="flex space-x-14">
+                    <h3 class=" font-semibold text-[16px] text-black mb-2 mt-2">{{item.title}}</h3>
+                    <h3 class="mb-0 font-normal text-[12px] text-black">{{item.timeAgo}}</h3>
+                  </div>
+
+                {{item.message}}
+                <div class="text-xs text-blue-600 dark:text-blue-500"></div>
+
+                </div>
+
+              </div>
+            }@else {
+              <div class="flex mb-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 text-sm dark:text-gray-400">
+                <div class="flex-shrink-0 p-3 border-gray-300">
+                  <img class="rounded-full w-10 h-10" src="assets/esp/logo.png" alt="Jese image">
+                </div>
+                <div>
+                  <div class="flex space-x-14">
+                    <h3 class=" font-semibold text-[16px] text-black mb-2 mt-2">No Notification </h3>
+                    <h3 class="mb-0 font-normal text-[12px] text-black">0 second ago</h3>
+                  </div>
+
+                  No Notfication message yet delivered
+                  <div class="text-xs text-blue-600 dark:text-blue-500"></div>
+
+                </div>
+
+              </div>
+            }
+            </div>
+
+        </div>
+        <a  class="block py-2 text-sm font-medium text-left text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
+          <div class="inline-flex text-left pl-5 cursor-pointer " (click)="viewAllNotification()">
+
+            View all notifications
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    }
+
+    <div *ngIf="isLogoutModalVisible" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75 z-50">
+      <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+        <div *ngFor="let item of UnreadNotificationData "  class="flex mb-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 text-sm dark:text-gray-400">
+
+          @if(item.id == readId){
+            <div class="flex-shrink-0 p-5 border-gray-300">
+              <img class="rounded-full w-10 h-10" src="assets/esp/logo.png" alt="Jese image">
+            </div>
+            <div>
+              <div class="flex space-x-14">
+                <h3 class=" font-semibold text-[16px] text-black mb-2 mt-2">{{item.title}}</h3>
+                <h3 class="mb-0 font-normal text-[12px] text-black">{{item.timeAgo}}</h3>
+              </div>
+
+            {{item.message}}
+            <div class="text-xs text-blue-600 dark:text-blue-500"></div>
+
+            </div>
+          }
+
+        </div>
+        <div class="mt-4 flex justify-center">
+          <button (click)="cancelLogout()" class="bg-white border border-gray-400 text-gray-800 py-2 px-4 rounded-lg mr-2">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+</div>

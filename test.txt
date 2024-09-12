@@ -1,0 +1,2 @@
+run specific test
+ng test --include=src/app/core/components/login/login.component.spec.ts

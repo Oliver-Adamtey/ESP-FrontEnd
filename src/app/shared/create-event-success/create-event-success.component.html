@@ -1,22 +1,19 @@
-<div class="bg-white-100 h-screen mt-10">
-  <div class="bg-white p-6  md:mx-auto">
-    <svg viewBox="0 0 24 24" class="text-green-600 w-16 h-16 mx-auto my-6">
-        <path fill="currentColor"
-            d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z">
-        </path>
-    </svg>
-    <div class="text-center">
-        <h3 class="md:text-2xl text-base text-gray-900 font-semibold text-center">Event Created</h3>
-        <p class="text-gray-600 my-2">Thank you for creating an event on Event Vista</p>
-        <p> Have a great day!  </p>
-        <div class="py-10 text-center cursor-pointer" (click)="Events() ">
-            <a  class="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3">
-                GO TO ALL EVENTS
+<div class="flex justify-center xl:mt-[20%]">
+  <div id="toast-success"
+      class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 "
+      role="alert">
+      <div
+          class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+              viewBox="0 0 20 20">
+              <path
+                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+          </svg>
+          <span class="sr-only">Check icon</span>
+      </div>
+      <div class="ml-3 text-sm font-normal">event successfully created</div>
 
-              </a>
+  </div>
 
 
-        </div>
-    </div>
-</div>
 </div>

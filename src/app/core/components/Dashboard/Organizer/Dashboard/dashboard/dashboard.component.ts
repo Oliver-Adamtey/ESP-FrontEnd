@@ -1,96 +1,102 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import {  Component, OnInit, inject,  } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { OrganizerDashGraphComponent } from '../../../../../../shared/organizer-graph/organizer-dash-graph/organizer-dash-graph.component';
-import { environment } from '../../../../../../../environments/environment';
+import { OrganizerDashGraphComponent } from '@component/organizer-graph/organizer-dash-graph/organizer-dash-graph.component';
+import { OrganizerDashComponent } from "@component/Organizer/organizer-sidebar/organizer-dash.component";
+import { OrganizerTopBarComponent } from "@component/Organizer/organizer-top-bar/organizer-top-bar.component";
+import { OrganizerDashMetricComponent } from "@component/Organizer/organizer-dash-metric/organizer-dash-metric.component";
+import { OrganizerChartComponent } from "@component/Organizer/organizer-chart/organizer-chart.component";
+import { OrganizerRevenueChartComponent } from "@component/Organizer/organizer-revenue-chart/organizer-revenue-chart.component";
+import { OrgProgressComponent } from '../org-progress/org-progress.component';
+
+import { OrganizerDashboardService } from '@services/Organizer/dashboard/organizer-dashboard.service';
+import { Data, Organizer } from '@interface/Admin/Organizer-dashboard/Organizer-dashboard';
+import { Analytics } from '@interface/Admin/admin-analytics';
+
+import {OrganizerGraphComponent} from '../organizer-graph/organizer-graph.component'
+import { OrganizerStatasticsComponent } from '../organizer-statistics/organizer-statastics.component';
+import { OrganizerEventComponent } from '../organizer-recent/organizer-event.component';
+import {organizerConstant} from './organizer-constant'
+
+
+
+import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
+import { BehaviorSubject } from 'rxjs';
+
+
 
 
 @Component({
-  selector: 'app-dashboard',
-  standalone: true,
-  imports: [
-
+    selector: 'app-dashboard',
+    standalone: true,
+    templateUrl: './dashboard.component.html',
+    styleUrl: './dashboard.component.css',
+    imports: [
     CommonModule,
     RouterLink,
-    OrganizerDashGraphComponent
-
-
-
+    OrganizerDashGraphComponent,
+    OrganizerDashComponent,
+    OrganizerTopBarComponent,
+    OrganizerDashMetricComponent,
+    OrganizerChartComponent,
+    OrganizerRevenueChartComponent,
+    OrganizerGraphComponent,
+    OrganizerStatasticsComponent,
+    CalendarModule,
+    OrganizerEventComponent,
+    OrgProgressComponent
   ],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
-
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
 
 OrganizerDashGraphComponent = OrganizerDashGraphComponent
 
+heading = organizerConstant.contents.heading;
+  sub_heading = organizerConstant.contents.subHeading;
 
-OrgDasImg: string = 'assets/esp/logo.png'
-DashBoardChartImg: string = 'assets/esp/dashboard/bar-chart-square-02.png'
-EventLayerImg: string = 'assets/esp/dashboard/layers-three-01.png'
-SettingsImg: string = 'assets/esp/dashboard/user.png'
-LogoutImg: string = 'assets/esp/dashboard/logout.png'
-NavbarBell: string = 'assets/esp/dashboard/bell.png'
-NavBarImg: string = 'assets/esp/dashboard/avatar.png'
-NavBarDownArrow: string = 'assets/esp/dashboard/down.png'
-CardImg: string = 'assets/esp/dashboard/three-dots.png'
-baseImg: string = 'assets/esp/dashboard/base.png'
-pieChart: string = 'assets/esp/dashboard/pie_chart.png'
+  OrgDasImg: string = organizerConstant.images.orgDasImg;
+  DashBoardChartImg: string = organizerConstant.images.dashBoardChartImg;
+  EventLayerImg: string = organizerConstant.images.eventLayerImg;
+  SettingsImg: string = organizerConstant.images.settingsImg;
+  LogoutImg: string = organizerConstant.images.logoutImg;
+  NavbarBell: string = organizerConstant.images.navbarBell;
+  NavBarImg: string = organizerConstant.images.navBarImg;
+  NavBarDownArrow: string = organizerConstant.images.navBarDownArrow;
+  CardImg: string = organizerConstant.images.cardImg;
+  baseImg: string = organizerConstant.images.baseImg;
+  pieChart: string = organizerConstant.images.pieChart;
 
-  Event: string = 'Event';
-  Vista: string = 'Vista';
+  Event: string = organizerConstant.contents.event;
+  Vista: string = organizerConstant.contents.vista;
 
-  NavBarName: string = 'Olivia Rhye'
-  subTitle: string = 'Plan and manage your gatherings effortlessly.'
-  Dashboard: string = 'Dashboard'
-  Users: string = 'Users'
-  LogOut: string = 'Log out'
+  NavBarName: string = organizerConstant.contents.navBarName;
+  Users: string = organizerConstant.contents.users;
+  LogOut: string = organizerConstant.contents.logOut;
 
-  eventCreated: string = 'Events created'
-  Revenue: string = 'Revenue'
-  fourThousand: number = 4000
-  Attendees: string = 'Number of Attendees'
-  EightThousand: number = 8000
-  RevChart: string = 'Revenue chart'
+  eventCreated: string = organizerConstant.contents.eventCreated;
+  Revenue: string = organizerConstant.contents.revenue;
+  fourThousand: number = 4000;
+  Attendees: string = organizerConstant.contents.attendees;
+  EightThousand: number = 8000;
+  RevChart: string = organizerConstant.contents.revChart;
+
+  organizerData!: Data;
+  analyticsData!:Analytics;
+
+  OrganizerData = new BehaviorSubject<Data | null>(null);
+  dailyTickets = 0;
+  public value: Date = organizerConstant.dates.value;
+  constant = organizerConstant
 
 
 
 
-constructor(private router: Router) {};
+private organizerDashboard = inject(OrganizerDashboardService);
+private router = inject(Router);
 
-orgEvent(){
-  this.router.navigate(['/org-event']);
-}
-orgDash(){
-this.router.navigate(['/org-dash']);
-}
-
-orgUsers(){
-this.router.navigate(['/org-users'])
-
-}
-
-logout(){
-
-const confirmLogOut = window.confirm('Are you sure you want to logout?');
-
-if(confirmLogOut){
-  if(!localStorage==undefined){
-  localStorage.removeItem(environment.ORGANIZER_TOKEN);
-  localStorage.clear();
-  this.router.navigate(['/login']);
-
-}}
-
-}
 
 activeStep: string = 'monthly';
 
-
-  showContent(step: string): void {
-    this.activeStep = step;
-  }
 
 
   accountSettings() {
@@ -104,12 +110,44 @@ activeStep: string = 'monthly';
   toggleCard() {
 
     this.profile = !this.profile
-    // this.router.navigate(['/login']);
+    
 
   }
 
-     fullName = localStorage.getItem('fullName')
 
+
+     fullName = sessionStorage.getItem('organizerName');
+     userId = sessionStorage.getItem('userId') || '';
+
+     ngOnInit(): void {
+       this.fetchOrganizerData();
+      this.fetchAnalytics();
+     }
+
+   
+     fetchOrganizerData(): void {
+      this.organizerDashboard.getOrganizerData(+this.userId).subscribe({
+        next: (response: Organizer) => {
+          this.OrganizerData.next(response.data);
+        },
+      });
+    }
+
+
+
+    fetchAnalytics():void {
+      this.organizerDashboard.getAnalyticsData(+this.userId).subscribe({
+        next: (response:Analytics) => {
+          this.analyticsData = response;
+        }
+      })
+    }
+
+    
+
+    showContent(step:string):void {
+      this.activeStep = step;
+    }
 
 }
 

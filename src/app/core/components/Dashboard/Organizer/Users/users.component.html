@@ -1,357 +1,745 @@
 <div
   class="font-inter relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 sm:h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-sm shadow-blue-gray-900/5 lg:h-[calc(100vh-2rem)] 2xl:h-[calc(100vh-2rem)]"
 >
-  <div class="mb-2 p-4">
-    <div
-      class="flex cursor-pointer items-center justify-center mb-6 mt-0 -ml-16"
-      (click)="orgDash()"
-    >
-      <img src="{{ OrgDasImg }}" alt="Event Vista Logo" class="mr-2" />
-      <h2 class="font-bold text-[24.59px] pt-3">
-        Event <span class="text-red-700">{{ Vista }}</span>
-      </h2>
-    </div>
-  </div>
-  <nav
-    class="-mt-10 flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700"
-  >
-    <div
-      role="button"
-      tabindex="0"
-      class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all outline-none"
-      (click)="orgDash()"
-    >
-      <div class="grid place-items-center mr-4">
-        <img
-          src="{{ DashBoardChartImg }}"
-          alt="Event Vista Logo"
-          class="-mr-2"
-        />
-      </div>
-      {{ Dashboard }}
-    </div>
-
-    <div
-      role="button"
-      (click)="orgEvent()"
-      tabindex="0"
-      class="flex items-center w-full p-3 text-start leading-tight transition-alloutline-none rounded-none"
-    >
-      <div class="grid place-items-center mr-4">
-        <img src="{{ EventLayerImg }}" alt="Event Vista Logo" class="-mr-2" />
-      </div>
-      Events
-    </div>
-
-    <div
-      role="button"
-      (click)="orgUsers()"
-      tabindex="0"
-      class="flex items-center w-full p-3 text-start leading-tight bg-[#EAECF0] rounded-none transition-all outline-none"
-    >
-      <div class="grid place-items-center mr-4">
-        <img src="{{ SettingsImg }}" alt="Event Vista Logo" class="-mr-2" />
-      </div>
-      Users
-    </div>
-
-    <div
-      (click)="logout()"
-      role="button"
-      tabindex="0"
-      class="2xl:mt-[450px] lg:mt-[150px] flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all"
-    >
-      <div class="grid place-items-center mr-4">
-        <img src="{{ LogoutImg }}" alt="Event Vista Logo" class="-mr-2" />
-      </div>
-      {{ LogOut }}
-    </div>
-  </nav>
+  <app-organizer-dash></app-organizer-dash>
 
   <div
-    class="dash absolute ml-[305px] border-[1px] rounded-t-lg w-[900px] 2xl:h-fit xl:h-fit 2xl:absolute 2xl:ml-[305px] 2xl:border-[1px] 2xl:rounded-t-lg 2xl:w-[1580px] xl:w-[940px]"
+    class="dash absolute ml-[305px] border-[1px] rounded-t-lg w-[900px] 2xl:h-full 2xl:-pb-32 xl:h-fit 2xl:absolute 2xl:ml-[305px] 2xl:border-[1px] 2xl:rounded-t-lg 2xl:w-[1580px] xl:w-[940px]"
   >
     <div
       class="dash border-[1px] rounded-t-lg p-0 pl-5 flex 2xl:border-[1px] 2xl:rounded-t-lg 2xl:p-2 2xl:pl-5 2xl:flex"
     >
-      <div class="dash-content-left">
-        <h2 class="font-semibold text-[24px]">{{ userManage }}</h2>
-        <p class="">
-          {{ subTitle }}
-        </p>
-      </div>
+      <app-organizer-top-bar [heading]="heading" [sub_Heading]="sub_heading">
+      </app-organizer-top-bar>
+    </div>
 
+    <div class="card-all m-0 flex mt-3">
       <div
-      class="dash-content-right flex size-7 ml-[300px] space-x-5 mt-2 2xl:flex 2xl:size-7 2xl:ml-[530px] 2xl:space-x-5 2xl:mt-2 xl:mt-5"
-    >
-      <img src="{{ NavbarBell }}" alt="" class="block absolute right-60 2xl:-mt-1 text-[14px] font-medium" />
-
-      @if (profile) {
-
-      <div class="block -mt-5 z-50 -right-10 absolute shadow-lg p-0 m-0">
-        <div
-          class="bg-white shadow-md rounded-lg p-6 absolute top-20 right-20 w-72 flex"
-        >
-          <img
-            src="assets/esp/dashboard/avatar.png"
-            alt="Navbar Image"
-            class="w-10 h-10 rounded-full mr-2"
-          />
-
-          <div class="relative -space-y-6 mb-8">
-            <h3 class="text-lg w-fit medium 2xl:text-[16px] 2xl:font-medium text-[#344054]">{{ NavBarName }}</h3>
-            <br />
-            <h5 class=" w-fit text-[14px] text-gray-500 2xl:mb-12" id="email">
-              {{ email }}
-            </h5>
-          </div>
-
-          <hr
-            class="bg-gray-500 border-2 dark:bg-gray-800 dark:border-gray-700"
-          />
-
-          <button
-            class="absolute -bottom-5 left-6 flex"
-            (click)="accountSettings()"
-          >
-            <div class="flex mb-8">
-              <img
-                src="assets/esp/dashboard/settings.png"
-                class="flex w-3 h-3 mt-0 mr-2 bottom-11 "
-              />
-
+        class="card w-full h-[700px] 2xl:pb-[785px] border-[1px] rounded-lg shadow-sm m-2"
+      >
+        <div class="card-all m-0 flex w-4/4 pb-5 p-2" >
+          <div class="flex space-y-10">
+            <div>
               <h3
-                class="flex text-xs text-gray-500 pl-5"
-                style="font-size: 14px"
+                (click)="toggleSection('users')"
+                [ngClass]="{ 'text-[#E04F16]': activeSection === 'users' }"
+                class="top-24 xl:mt-3 2xl:top-28 text-[18px] left-7 absolute font-medium cursor-pointer"
               >
-                Account settings
+                All users
+
+                <span
+
+
+                  class="p-3 bg-[#FFF4ED] rounded-full size-2 absolute mt-0 ml-3"
+                >
+                  <span class="absolute -mt-3 -ml-1 font-bold text-[#BC1B06]">
+                    {{ totalElements }}</span
+                  >
+                </span>
+                <div *ngIf="activeSection === 'users'">
+                  <hr class="border-t-1 border-[#E04F16]" />
+                </div>
               </h3>
             </div>
-          </button>
-        </div>
-        <div class="w-full border-1"></div>
-      </div>
-
-      }
-
-      <img
-        src="{{ NavBarImg }}"
-        alt=""
-        class="block absolute right-44 cursor-pointer 2xl:-mt-1"
-        (click)="toggleCard()"
-      />
-
-      <p class="block absolute right-20 top-8 2xl:-mt-2 text-[14px] font-medium">
-        {{ NavBarName }}
-      </p>
-
-      <button>
-        <img
-          src="{{ NavBarDownArrow }}"
-          alt=""
-          class="size-5 absolute 2xl:right-10 2xl:top-6 "
-        />
-      </button>
-    </div>
-    </div>
-
-    <div class="card-all m-0 flex w-4/4 mt-10 ml-8 mr-8">
-      <h3 class="top-24 2xl:top-28 text-[14px] absolute font-semibold">
-        All users
-        <span class="p-3 bg-[#FFF4ED] rounded-full size-2 absolute mt-0 ml-3">
-          <span class="absolute -mt-3 -ml-1 font-bold text-[#BC1B06]">{{totalElements}}</span>
-        </span>
-      </h3>
-
-      <div
-        class="searchFilter flex space-x-3 right-56 2xl:top-28 top-24 absolute"
-      >
-        <div class="search mb-2">
-          <img src="{{ SearchImg }}" alt="" class="absolute mt-3.5 ml-2 w-3" />
-          <input
-            type="text"
-            id="name"
-            formControlName="fullName"
-            class="shadow-sm bg-[white] w-[220px] border border-gray-300 text-gray-900 text-sm rounded-md block p-2.5 pl-7 dark:text-white"
-            placeholder="Search users by name"
-          />
-        </div>
-
-        <div class="filter mb-2">
-          <img src="{{ FilterImg }}" alt="" class="absolute mt-3 ml-2 w-3" />
-          <select
-            id="countries"
-            formControlName="role"
-            class="shadow-sm bg-[white] w-[113px] border border-gray-300 text-gray-900 text-sm rounded-md block pl-7 dark:text-white p-2.5"
-          >
-            <option value="" selected disabled>{{ Filters }}</option>
-            <option value="{{ Free }}">{{ Free }}</option>
-            <option value="{{ Paid }}">{{ Paid }}</option>
-          </select>
-        </div>
-      </div>
-
-      <button
-        type="submit"
-        class="bg-[#BC1B06] absolute cursor-pointer 2xl:top-28 xl:top-24 text-white font-normal p-2.5 flex rounded-md w-[164px] right-10"
-        (click)="openModal()"
-      >
-        <span
-          ><img src="{{ userPlus }}" alt="" srcset="" class="ml-7 -pb-7"
-        /></span>
-        <span class="ml-2 font-medium">{{ inviteUser }}</span>
-      </button>
-    </div>
-
-    <div class="card-all m-0 flex mt-5 ml-8 mr-8">
-      <div
-        class="card w-full h-[486px] border-[1px] rounded-lg shadow-sm m-2 "
-      >
-        <div *ngIf="displayUsers">
-        <app-preload-general></app-preload-general>
-        </div>
-
-        @if (eventCreated) {
-
-          <div class="relative w-full pl-0">
-            <table class="pb-10 w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-              <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <td scope="col" class="px-6 py-3">Username</td>
-                  <td scope="col" class="px-6 py-3">Email address</td>
-                  <td scope="col" class="px-6 py-3">
-                    Role
-                    <img src="assets/esp/dashboard/qmark.png" class="inline-block h-3 w-3" />
-                  </td>
-                  <td scope="col" class="px-6 py-3">Status</td>
-                  <td scope="col" class="px-6 py-3">Action</td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of records" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <th scope="row" class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <div class="w-10 h-10 flex-shrink-0 rounded-full overflow-hidden mr-3">
-                      <img class="w-full h-full object-cover" src="assets/esp/dashboard/avatar.png" alt="Image" />
-                    </div>
-                    {{item.fullName}}
-                  </th>
-                  <td class="px-6 py-4">{{item.email}}</td>
-                  <td class="px-6 py-4">{{item.role}}</td>
-                  <td class="px-12 py-4">
-                    <ul class="list-none p-0 2xl:pl-1 2xl:w-[65px]">
-                      <li *ngIf="item.enabled" class="flex items-center bg-green-100 text-green-600 p-1 rounded-2xl">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 15 20" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="5" cy="10" r="3" />
-                        </svg>
-                        <span class="ml-0">Active</span>
-                      </li>
-                      <li *ngIf="!item.enabled" class="flex items-center bg-red-100 text-red-600 p-1 rounded-2xl">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 15 20" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="5" cy="10" r="3" />
-                        </svg>
-                        <span class="ml-0">Inactive</span>
-                      </li>
-                    </ul>
-                  </td>
-                  <td class="px-6 py-4 relative">
-                    <button (click)="actionMenu()">
-                      <svg class="w-5 h-5 rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 15 20">
-                        <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-                      </svg>
-                    </button>
-                    <div *ngIf="threeButtonAction" class="w-fit absolute justify-start text-left flex flex-col pointer-events-auto right-6 bg-white shadow-md rounded-md p-4 top-auto">
-                      <button class="text-left text-gray-800 hover:bg-gray-200 py-1 px-2 mb-2">Activate User</button>
-                      <button class="text-left text-gray-800 hover:bg-gray-100 py-1 px-2 mb-2">Deactivate User</button>
-                      <button class="text-left text-gray-800 hover:bg-gray-100 py-1 px-2">Delete User</button>
-                    </div>
-                  </td>
-
-            </tr>
 
 
-              </tbody>
-
-
-
-            </table>
+            <div>
+              <h3
+                (click)="toggleSection('permissions')"
+                [ngClass]="{
+                  'text-[#E04F16]': activeSection === 'permissions'
+                }"
+                class="top-24 xl:mt-3 2xl:top-28 text-[18px] left-40 absolute font-medium cursor-pointer"
+              >
+                Permissions
+                <div *ngIf="activeSection === 'permissions'">
+                  <hr class="border-t-1 border-[#E04F16]" />
+                </div>
+              </h3>
+            </div>
           </div>
-
-
-          <nav aria-label="Page navigation example" class="pt-5 pb-5 space-x-36">
-            <ul class="inline-flex space-x-32 text-sm">
-              <li>
-                <a class="cursor-pointer flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                   (click)="prevPage()" [class.disabled]="currentPage === 0">
-                  <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
-                  </svg>
-                  Previous
-                </a>
-              </li>
-
-              <div class="flex space-x-2">
-                <ng-container *ngFor="let pageNumber of getPageNumbers()">
-                  <li>
-                    <a class="cursor-pointer flex pl-3 items-center justify-center px-3 h-8 leading-tight text-[#E62E05] bg-[#FFF4ED] rounded-lg border-gray-300 hover:bg-[#FFF4ED] dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                       (click)="goToPage(pageNumber)">
-                      {{ pageNumber }}
-                    </a>
-                  </li>
-                </ng-container>
-              </div>
-
-              <li>
-                <a class="cursor-pointer flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                   (click)="nextPage()" [class.disabled]="currentPage === totalPages">
-                  Next
-                  <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                  </svg>
-                </a>
-              </li>
-            </ul>
-          </nav>
-
-
-
-        } @else {
-
-        <div class="text-first-event text-center justify-center top-24">
-          <img
-            src="assets/esp/dashboard/users-temp.png"
-            alt=""
-            class="absolute size-60 xl:ml-12 xl:top-[200px] 2xl:right-[670px] xl:right-[350px] ml-5"
-          />
 
           <div
-            class="text absolute xl:top-[460px] 2xl:right-[350px] left-80 ml-5 xl:ml-12"
+            *ngIf="activeSection === 'users'"
+            class="w-full pl-0 xl:mt-5 xl:p-5"
           >
-            <h2 class="mt-5 font-semibold text-[20.88px]">{{ inviteFirst }}</h2>
-            <p>{{ addUsers }}</p>
+            @if (records.length > 0) {
+
+            <div class="relative w-full pl-0 xl:mt-5 xl:p-5" >
+              <table
+                class="pb-10 w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+              >
+                <thead
+                  class="text-xs text-gray-700 bg-gray-50 dark:text-gray-400"
+                >
+                  <tr>
+                    <td class="px-6 py-3">Username</td>
+                    <td class="px-6 py-3">Email address</td>
+                    <td class="px-6 py-3" >
+                      Role
+                      <img
+                        src="assets/esp/dashboard/qmark.png"
+                        class="inline-block h-3 w-3"
+                      />
+                    </td>
+                    <td class="px-6 py-3">Status</td>
+                    <td class="px-6 py-3">Action</td>
+                  </tr>
+                </thead>
+                <tbody >
+
+                  <tr
+                    *ngFor="let item of records; let i = index"
+                    class="bg-white border-b"
+                  >
+                    <th
+                      (click)="viewEvent(item.id, item.fullName)"
+                      scope="row"
+                      class="cursor-pointer flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                    >
+                      <div
+                        class="w-10 h-10 flex-shrink-0 rounded-full overflow-hidden mr-3"
+                      >
+                      @if(item.profileImageUrl===null){
+                        <img
+                        class="w-full h-full object-cover"
+                        src="assets/esp/dashboard/avatar.png"
+                        alt="Image"
+                      />
+                      } @else{
+                        <img
+                        class="w-full h-full object-cover"
+                        src="{{item.profileImageUrl}}"
+                        alt="Image"
+                      />
+                      }
+
+                      </div>
+                      {{ item.fullName }}
+                    </th>
+                    <td
+                      class="px-6 py-4 cursor-pointer"
+                      (click)="viewEvent(item.id, item.fullName)"
+                    >
+                      {{ item.email }}
+                    </td>
+                    <td
+                      class="px-6 py-4 cursor-pointer"
+                      (click)="viewEvent(item.id, item.fullName)"
+                    >
+                      {{ item.role }}
+                    </td>
+
+                    <td class="px-12 py-4">
+                      <ul class="list-none p-0 2xl:pl-1 2xl:w-[65px]">
+                        <li
+                          *ngIf="item.enabled"
+                          class="flex items-center bg-green-100 text-green-600 p-1 rounded-2xl"
+                        >
+                          <svg
+                            class="w-4 h-4 fill-current"
+                            viewBox="0 0 15 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle cx="5" cy="10" r="3" />
+                          </svg>
+                          <span class="ml-0">Active</span>
+                        </li>
+                        <li
+                          *ngIf="!item.enabled"
+                          class="flex items-center bg-red-100 text-red-600 p-1 rounded-2xl"
+                        >
+                          <svg
+                            class="w-4 h-4 fill-current"
+                            viewBox="0 0 15 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle cx="5" cy="10" r="3" />
+                          </svg>
+                          <span class="ml-0">Inactive</span>
+                        </li>
+                      </ul>
+                    </td>
+
+
+                    <td class="px-12 py-4" #Card>
+                      <button (click)="toggleActionMenu(item.id)" class="">
+                        <svg
+                          class="w-5 h-5 rotate-90"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 15 20"
+                        >
+                          <path
+                            d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"
+                          />
+                        </svg>
+                      </button>
+                      <div
+                        *ngIf="isActionMenuOpen && selectedItemId === item.id"
+                        class="absolute w-fit justify-start text-left flex flex-col pointer-events-auto right-6 bg-white shadow-md rounded-md p-4 top-auto"
+                      >
+                        <button
+                          [ngStyle]="
+                            item.enabled
+                              ? { color: '#D3D3D3', cursor: 'not-allowed' }
+                              : {}
+                          "
+                          [disabled]="item.enabled"
+                          class="flex text-left text-gray-800 hover:bg-gray-200 py-1 px-2 mb-2"
+                          (click)="showModal(item.id, 'activate')"
+                        >
+                          <svg
+                            class="mr-3"
+                            width="16"
+                            height="14"
+                            viewBox="0 0 16 14"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M8.00016 9.33333H5.00017C4.06979 9.33333 3.6046 9.33333 3.22607 9.44816C2.3738 9.70669 1.70686 10.3736 1.44832 11.2259C1.3335 11.6044 1.3335 12.0696 1.3335 13M10.6668 11L12.0002 12.3333L14.6668 9.66667M9.66683 4C9.66683 5.65685 8.32368 7 6.66683 7C5.00998 7 3.66683 5.65685 3.66683 4C3.66683 2.34315 5.00998 1 6.66683 1C8.32368 1 9.66683 2.34315 9.66683 4Z"
+                              stroke="#475467"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          Activate User
+                        </button>
+                        <button
+                          [ngStyle]="
+                            !item.enabled
+                              ? { color: '#D3D3D3', cursor: 'not-allowed' }
+                              : {}
+                          "
+                          [disabled]="!item.enabled"
+                          class="flex text-left text-gray-800 hover:bg-gray-100 py-1 px-2 mb-2"
+                          (click)="showModal(item.id, 'deactivate')"
+                        >
+                          <svg
+                            class="mr-3"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M11.0002 2.66797L14.3335 6.0013M14.3335 2.66797L11.0002 6.0013M10.6668 14.0013V13.2013C10.6668 12.0812 10.6668 11.5211 10.4488 11.0933C10.2571 10.717 9.95113 10.411 9.57481 10.2193C9.14699 10.0013 8.58693 10.0013 7.46683 10.0013H4.5335C3.41339 10.0013 2.85334 10.0013 2.42552 10.2193C2.04919 10.411 1.74323 10.717 1.55148 11.0933C1.3335 11.5211 1.3335 12.0812 1.3335 13.2013V14.0013M8.3335 5.0013C8.3335 6.28997 7.28883 7.33464 6.00016 7.33464C4.7115 7.33464 3.66683 6.28997 3.66683 5.0013C3.66683 3.71264 4.7115 2.66797 6.00016 2.66797C7.28883 2.66797 8.3335 3.71264 8.3335 5.0013Z"
+                              stroke="#475467"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          Deactivate User
+                        </button>
+                        <button
+                          class="flex text-left text-gray-800 hover:bg-gray-100 py-1 px-2"
+                          (click)="showModal(item.id, 'delete')"
+                        >
+                          <svg
+                            class="mr-3"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M6 2H10M2 4H14M12.6667 4L12.1991 11.0129C12.129 12.065 12.0939 12.5911 11.8667 12.99C11.6666 13.3412 11.3648 13.6235 11.0011 13.7998C10.588 14 10.0607 14 9.00623 14H6.99377C5.93927 14 5.41202 14 4.99889 13.7998C4.63517 13.6235 4.33339 13.3412 4.13332 12.99C3.90607 12.5911 3.871 12.065 3.80086 11.0129L3.33333 4M6.66667 7V10.3333M9.33333 7V10.3333"
+                              stroke="#475467"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          Delete User
+                        </button>
+                      </div>
+                    </td>
+
+
+                  </tr>
+                </tbody>
+              </table>
+
+              <div
+                *ngIf="totalElements > pageSize"
+                class="2xl:bottom-auto 2xl:mt-[50px] flex items-center justify-center xl:-mt-80"
+              >
+                <ul
+                  class="inline-flex 2xl:p-2 xl:space-x-60 2xl:space-x-5 text-sm"
+                >
+                  <li>
+                    <button
+                      class="cursor-pointer flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:text-gray-400"
+                      (click)="previousPage()"
+                    >
+                      <svg
+                        class="w-3.5 h-3.5 me-2 rtl:rotate-180"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 10"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 5H1m0 0 4 4M1 5l4-4"
+                        />
+                      </svg>
+                      Previous
+                    </button>
+                  </li>
+
+                  <div *ngFor="let page of totalPagesArray; let i = index">
+                    <li>
+                      <button
+                        class="py-2 px-4 rounded-lg cursor-pointer"
+                        [ngStyle]="{
+                          'background-color':
+                            i + 1 === currentPage ? '#FFE6D5' : '#FFE6D5',
+                          color: i + 1 === currentPage ? '#E62E05' : '#E62E05'
+                        }"
+                        (click)="changePage(i)"
+                      >
+                        {{ i + 1 }}
+                      </button>
+                    </li>
+                  </div>
+
+                  <li>
+                    <button
+                      class="cursor-pointer flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400"
+                      (click)="nextPage()"
+                    >
+                      Next
+                      <svg
+                        class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 10"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M1 5h12m0 0L9 1m4 4L9 9"
+                        />
+                      </svg>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            } @else {
+
+            <div class="text-first-event text-center justify-center top-24">
+              <img
+                src="assets/esp/dashboard/users-temp.png"
+                alt=""
+                class="absolute size-[400px] xl:ml-12 xl:top-[200px] 2xl:right-[670px] xl:right-[350px] ml-5"
+              />
+
+
+
+
+              <div
+                class="text absolute xl:top-[460px] 2xl:right-[10px] 2xl:top-[700px] -left-36 ml-5 xl:ml-12"
+              >
+                <h2 class="mt-5 font-semibold text-[20.88px]">
+                  {{ inviteFirst }}
+                </h2>
+                <p>{{ addUsers }}</p>
+              </div>
+
+              <div
+                class="flex justify-center 2xl:ml-[630px] 2xl:mt-32 absolute"
+              >
+              @if(co_OrganizerRole){
+                <button
+                [disabled]="co_OrganizerRole"
+                [ngStyle]="{ 'cursor': co_OrganizerRole ? 'none' : 'pointer', 'pointer-events': co_OrganizerRole ? 'none' : 'auto', 'opacity': co_OrganizerRole ? '0.5' : '1' }"
+                  type="submit"
+                  class="bg-[#E04F16] flex xl:mt-[410px] cursor-pointer text-white font-normal p-2.5 rounded-md w-[164px]"
+                  (click)="openModal()"
+                >
+                  <span class=""
+                    ><img src="{{ userPlus }}" alt="" srcset="" class="ml-7" />
+                  </span>
+                  <span class="ml-2 font-medium">{{ inviteUser }}</span>
+                </button>
+              } @else {
+                <button
+                  type="submit"
+                  class="bg-[#E04F16] flex xl:mt-[410px] cursor-pointer text-white font-normal p-2.5 rounded-md w-[164px]"
+                  (click)="openModal()"
+                >
+                  <span class=""
+                    ><img src="{{ userPlus }}" alt="" srcset="" class="ml-7" />
+                  </span>
+                  <span class="ml-2 font-medium">{{ inviteUser }}</span>
+                </button>
+              }
+              </div>
+
+            </div>
+
+            }
           </div>
 
-          <div class="flex justify-center">
-            <button
-              type="submit"
-              class="bg-[#BC1B06] flex mt-96 cursor-pointer text-white font-normal p-2.5
-              rounded-md w-[164px]"
-              (click)="openModal()"
+          <div
+            *ngIf="activeSection === 'permissions'"
+            class="w-full pl-0 xl:mt-5 xl:p-5"
+          >
+            @if (permissionStatus.length > 0) {
+
+            <div class="relative w-full pl-0 xl:mt-5 xl:p-5">
+              <table
+                class="pb-10 w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+              >
+                <thead
+                  class="text-xs text-gray-700 bg-gray-50 dark:text-gray-400"
+                >
+                  <tr>
+                    <td class="px-6 py-3">Username</td>
+                    <td class="px-6 py-3">Email address</td>
+                    <td class="px-6 py-3">Create Event</td>
+                    <td class="px-6 py-3">Edit Event</td>
+                    <td class="px-6 py-3">Delete Event</td>
+                    <td class="px-6 py-3">Invite Users</td>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr
+                    *ngFor="let item of permissionStatus; let i = index"
+                    class="bg-white border-b"
+                  >
+                    <th
+                      (click)="viewEvent(item.id, item.fullName)"
+                      scope="row"
+                      class="cursor-pointer flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                    >
+                      <div
+                        class="w-10 h-10 flex-shrink-0 rounded-full overflow-hidden mr-3"
+                      >
+                      @if(item.profileImageUrl===null){
+
+                      <img
+                      class="w-full h-full object-cover"
+                      src="assets/esp/dashboard/avatar.png"
+                      alt="Image"
+                    />
+                      }@else {
+                        <img
+                        class="w-full h-full object-cover"
+                        src="{{item.profileImageUrl}}"
+                        alt="Image"
+                      />
+                      }
+
+                      </div>
+                      {{ item.fullName }}
+                    </th>
+
+                    <td class="px-6 py-4">{{ item.email }}</td>
+
+
+                    <td class="px-6 py-4">
+
+                      <div class="flex">
+                        <label
+                          class="inline-flex items-center cursor-pointer text-lg"
+                        >
+                        <input
+                        type="checkbox"
+                        [checked]="item.canScheduleEvent"
+                        class="sr-only peer"
+                        (change)="onCreate(item.id, item.canScheduleEvent)"
+
+                      />
+
+                          <div
+                            class="relative w-16 h-8 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-teal-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:start-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"
+                          ></div>
+                        </label>
+                      </div>
+                    </td>
+
+                    <td class="px-6 py-3">
+                      <div class="flex">
+                        <label
+                          class="inline-flex items-center cursor-pointer text-lg"
+                        >
+                          <input
+                            type="checkbox"
+                            value=""
+                            [checked]="item.canEditEvent"
+                            class="sr-only peer"
+                            (click)="onUpdate(item.id, item.canEditEvent)"
+
+                          />
+                          <div
+                            class="relative w-16 h-8 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-teal-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:start-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"
+                          ></div>
+                        </label>
+                      </div>
+                    </td>
+
+                    <td class="px-12 py-4">
+                      <div class="flex">
+                        <label
+                          class="inline-flex items-center cursor-pointer text-lg"
+                        >
+                          <input
+                            type="checkbox"
+                            value=""
+                            class="sr-only peer"
+                            [checked]="item.canDeleteEvent"
+                            (click)="onDelete(item.id, item.canDeleteEvent)"
+                          />
+                          <div
+                            class="relative w-16 h-8 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-teal-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:start-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"
+                          ></div>
+                        </label>
+                      </div>
+                    </td>
+
+                    <td class="px-12 py-4">
+                      <div class="">
+                        <label
+                          class="inline-flex items-center cursor-pointer text-lg"
+                        >
+                          <input
+                            type="checkbox"
+                            value=""
+                            class="sr-only peer"
+                            [checked]="item.canInviteUser"
+                            (click)="onInvite(item.id, item.canInviteUser)"
+                          />
+                          <div
+                            class="relative w-16 h-8 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-teal-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:start-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"
+                          ></div>
+                        </label>
+                      </div>
+                    </td>
+
+
+                  </tr>
+                </tbody>
+              </table>
+
+              <div
+                *ngIf="totalElements > pageSize"
+                class="2xl:bottom-auto 2xl:mt-[50px] flex items-center justify-center xl:-mt-80"
+              >
+                <ul
+                  class="inline-flex 2xl:p-2 xl:space-x-60 2xl:space-x-5 text-sm"
+                >
+                  <li>
+                    <button
+                      class="cursor-pointer flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:text-gray-400"
+                      (click)="previousPage()"
+                    >
+                      <svg
+                        class="w-3.5 h-3.5 me-2 rtl:rotate-180"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 10"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 5H1m0 0 4 4M1 5l4-4"
+                        />
+                      </svg>
+                      Previous
+                    </button>
+                  </li>
+
+                  <div *ngFor="let page of totalPagesArray; let i = index">
+                    <li>
+                      <button
+                        class="py-2 px-4 rounded-lg cursor-pointer"
+                        [ngStyle]="{
+                          'background-color':
+                            i + 1 === currentPage ? '#FFE6D5' : '#FFE6D5',
+                          color: i + 1 === currentPage ? '#E62E05' : '#E62E05'
+                        }"
+                        (click)="changePage(i)"
+                      >
+                        {{ i + 1 }}
+                      </button>
+                    </li>
+                  </div>
+
+                  <li>
+                    <button
+                      class="cursor-pointer flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400"
+                      (click)="nextPage()"
+                    >
+                      Next
+                      <svg
+                        class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 10"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M1 5h12m0 0L9 1m4 4L9 9"
+                        />
+                      </svg>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            } @else {
+
+            <div class="text-first-event text-center justify-center top-24">
+              <img
+                src="assets/esp/dashboard/users-temp.png"
+                alt=""
+                class="absolute size-[400px] xl:ml-12 xl:top-[200px] 2xl:right-[670px] xl:right-[350px] ml-5"
+              />
+
+              <div
+                class="text absolute xl:top-[460px] 2xl:right-[10px] 2xl:top-[700px] -left-36 ml-5 xl:ml-12"
+              >
+                <h2 class="mt-5 font-semibold text-[20.88px]">
+                  {{ inviteFirst }}
+                </h2>
+                <p>{{ addUsers }}</p>
+              </div>
+
+              <div
+                class="flex justify-center 2xl:ml-[630px] 2xl:mt-32 absolute"
+              >
+              @if(co_OrganizerRole){
+                <button
+                [disabled]="co_OrganizerRole"
+                [ngStyle]="{ 'cursor': co_OrganizerRole ? 'none' : 'pointer', 'pointer-events': co_OrganizerRole ? 'none' : 'auto', 'opacity': co_OrganizerRole ? '0.5' : '1' }"
+                  type="submit"
+                  class="bg-[#E04F16] flex xl:mt-[410px] cursor-pointer text-white font-normal p-2.5 rounded-md w-[164px]"
+                  (click)="openModal()"
+                >
+                  <span class=""
+                    ><img src="{{ userPlus }}" alt="" srcset="" class="ml-7" />
+                  </span>
+                  <span class="ml-2 font-medium">{{ inviteUser }}</span>
+                </button>
+              }@else {
+                <button
+                  type="submit"
+                  class="bg-[#E04F16] flex xl:mt-[410px] cursor-pointer text-white font-normal p-2.5 rounded-md w-[164px]"
+                  (click)="openModal()"
+                >
+                  <span class=""
+                    ><img src="{{ userPlus }}" alt="" srcset="" class="ml-7" />
+                  </span>
+                  <span class="ml-2 font-medium">{{ inviteUser }}</span>
+                </button>
+              }
+              </div>
+            </div>
+
+            }
+          </div>
+
+          <div
+            class="searchFilter flex space-x-3 right-56 2xl:top-28 top-24 absolute"
+          >
+            <div class="search mb-2">
+              <img
+                src="{{ SearchImg }}"
+                alt=""
+                class="absolute mt-3.5 ml-2 w-3"
+              />
+              <input
+                type="text"
+                id="name"
+                formControlName="search"
+                class="shadow-sm bg-[white] w-[220px] border border-gray-300 text-gray-900 text-sm rounded-md block p-2.5 pl-7"
+                placeholder="Search users by name or email"
+                #filter
+                (keyup)="filterData(filterByCategory, filter.value)"
+              />
+            </div>
+
+            @if (co_OrganizerRole) {
+            <div class="filter mb-2"
             >
-              <span class=""
-                ><img src="{{ userPlus }}" alt="" srcset="" class="ml-7" />
-              </span>
-              <span class="ml-2 font-medium">{{ inviteUser }}</span>
-            </button>
+              <img
+                src="{{ FilterImg }}"
+                alt=""
+                class="absolute mt-3 ml-2 w-3"
+              />
+              <select
+              [disabled]="co_OrganizerRole"
+              [ngStyle]="{ 'cursor': co_OrganizerRole ? 'none' : 'pointer', 'pointer-events': co_OrganizerRole ? 'none' : 'auto', 'opacity': co_OrganizerRole ? '0.5' : '1' }"
+
+                id=""
+                [(ngModel)]="filterByCategory"
+                (change)="filterData(filterByCategory, filter.value)"
+                class="shadow-sm bg-[white] text-gray-900 w-[165px] border border-gray-300 text-sm rounded-md block pl-7 p-2.5"
+              >
+                <option value="" disabled selected>Filter by Status</option>
+                <option value="" selected>All</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+          }
           </div>
-        </div>
 
+          @if(co_OrganizerRole){
+
+
+          <button
+            type="submit"
+            [disabled]="co_OrganizerRole"
+                [ngStyle]="{ 'cursor': co_OrganizerRole ? 'none' : 'pointer', 'pointer-events': co_OrganizerRole ? 'none' : 'auto', 'opacity': co_OrganizerRole ? '0.5' : '1' }"
+            class="bg-[#E04F16] absolute cursor-pointer 2xl:top-28 xl:top-24 text-white font-normal p-2.5 flex rounded-md w-[164px] right-10"
+            (click)="openModal()"
+
+          >
+            <span
+              ><img src="{{ userPlus }}" alt="" srcset="" class="ml-7 -pb-7"
+            /></span>
+            <span class="ml-2 font-medium">{{ inviteUser }}</span>
+          </button>
+        }@else{
+          <button
+            type="submit"
+            class="bg-[#E04F16] absolute cursor-pointer 2xl:top-28 xl:top-24 text-white font-normal p-2.5 flex rounded-md w-[164px] right-10"
+            (click)="openModal()"
+
+          >
+            <span
+              ><img src="{{ userPlus }}" alt="" srcset="" class="ml-7 -pb-7"
+            /></span>
+            <span class="ml-2 font-medium">{{ inviteUser }}</span>
+          </button>
         }
-
-
-
-
-
-
+        </div>
       </div>
     </div>
   </div>
@@ -359,16 +747,90 @@
 
 
 
-
-@if(modal){
-
 <div
-  class="absolute inset-0 bg-[#344054]/45 overflow-hidden"
-  style="background-size: cover; background-position: unset"
+  *ngIf="isModalVisible"
+  class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75 z-50"
 >
-  <div class="h-screen flex items-center justify-center">
-    <app-user-invite />
+  <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+    <div class="logout text-left">
+      <h3 class="mb-2">{{ action | uppercase }}</h3>
+
+      <p>
+        Are you sure you want to <span>{{ action}} </span> co-organizer ?<br />
+      </p>
+
+    </div>
+    <div class="mt-4 flex justify-center">
+      <button
+        (click)="confirmState()"
+        class="bg-white border border-gray-400 text-gray-800 py-2 px-4 rounded-lg mr-2"
+      >
+        Confirm
+      </button>
+      <button
+        (click)="cancelState()"
+        class="bg-[#E04F16] text-white py-2 px-4 rounded-lg"
+      >
+        Cancel
+      </button>
+    </div>
   </div>
 </div>
 
-}
+
+
+
+
+
+<div *ngIf="inviteModal"
+  class="font-inter fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75 z-50"
+>
+    <div class="logout text-left">
+      <div class="h-screen flex items-center justify-center">
+        <div class="justify-center items-center mb-0 pb-0 h-[100vh] relative right-0 lg:h-[calc(100vh-2rem)]">
+          <form (ngSubmit)="onSubmit()" [formGroup]="OrganInvite" class="sm:rounded-none w-[430px] pt-10 pb-10 leading-8 bg-white pl-8 pr-8 lg:rounded-xl relative lg:absolute lg:top-1/2 lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2">
+            <button (click)="closeModal()" type="button" class="absolute right-10">
+    <img src="assets/esp/org-dash/org-close.png" alt="" srcset="">
+            </button>
+
+            <div class="">
+              <h2 class="text-[#101828] text-[18px] font-bold" >Invite User</h2>
+
+            </div>
+
+            <div class="mb-2">
+              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+              <input type="text" id="name" formControlName="fullName" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:text-white" placeholder="Enter your name here" required>
+            </div>
+
+            <div class="mb-2">
+              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-5">Email</label>
+              <input type="email" id="email" formControlName="email" class="shadow-sm bg-gray-50 border border-gray-300 mt-3 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:text-white" placeholder="Enter your email address" required>
+            </div>
+
+            <div class="mb-2">
+              <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
+              <select id="countries" formControlName="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:text-white">
+                <option value="CO_ORGANIZER" selected>CO_ORGANIZER</option>
+              </select>
+            </div>
+
+            <div class="flex justify-between w-full">
+              <div class="mt-5 w-max space-x-5">
+                <button (click)="closeModal()" type="button" class="bg-[#ffffff] border-x-2 border-y-2 cursor-pointer text-black font-normal p-2.5 pt-2 pb-2 rounded-md w-[164px]">
+                  Cancel
+                </button>
+                <button type="submit" class="bg-[#E04F16] cursor-pointer text-white font-normal p-2.5 pt-2 pb-2 rounded-md w-[164px]">
+                  Invite user
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+

@@ -1,0 +1,185 @@
+<section
+  class="flex flex-col gap-4 lg:flex-row lg:gap-0 lg:divide-x-2 lg:divide-neutral-N300 text-neutral-N600 w-full"
+>
+  <div class="p-4">
+    <fnc-date-range-actions
+      [date]="startMonth()"
+      (updatePrevMonth)="selectStartMonthPrev()"
+      (updateNextMonth)="selectStartMonthNext()"
+      (updateDropdownType)="startRangeDropdownType.set($event)"
+    ></fnc-date-range-actions>
+    @switch (startRangeDropdownType()) {
+      @case ("day") {
+        <ng-container *ngTemplateOutlet="startMonthCalendar"></ng-container>
+      }
+      @case ("month") {
+        <fnc-month-picker
+          class="mt-4"
+          (changeMonthtDropdown)="selectStartDate($event, 'month')"
+          [date]="startMonth()"
+        ></fnc-month-picker>
+      }
+      @case ("year") {
+        <fnc-year-picker
+          class="mt-4"
+          [yearInput]="startMonth().getFullYear()"
+          (updateYearSelection)="selectStartDate($event, 'year')"
+        ></fnc-year-picker>
+      }
+    }
+  </div>
+
+  <div class="py-4 p-4 lg:p-r-0 lg:pl-4">
+    <fnc-date-range-actions
+      [date]="endMonth()"
+      (updatePrevMonth)="selectEndMonthPrev()"
+      (updateNextMonth)="selectEndMonthNext()"
+      (updateDropdownType)="endRangeDropdownType.set($event)"
+    ></fnc-date-range-actions>
+    @switch (endRangeDropdownType()) {
+      @case ("day") {
+        <ng-container *ngTemplateOutlet="endMonthCalendar"></ng-container>
+      }
+      @case ("month") {
+        <fnc-month-picker
+          class="mt-4"
+          (changeMonthtDropdown)="selectEndDate($event, 'month')"
+          [date]="endMonth()"
+        ></fnc-month-picker>
+      }
+      @case ("year") {
+        <fnc-year-picker
+          class="mt-4"
+          [yearInput]="endMonth().getFullYear()"
+          (updateYearSelection)="selectEndDate($event, 'year')"
+        ></fnc-year-picker>
+      }
+    }
+  </div>
+</section>
+
+<ng-template #startMonthCalendar>
+  <fnc-date-days></fnc-date-days>
+  @for (week of startMonthDays(); track week) {
+    <div class="grid grid-cols-7 gap-2 gap-y-4 h-[2.2rem]">
+      @for (day of week; track day) {
+        <button
+          [attr.data-day]="day"
+          (mouseover)="handleHoveredDays(day)"
+          (focus)="handleHoveredDays(day)"
+          (click)="$event.stopPropagation(); selectDateRange(day)"
+          [disabled]="
+            dateRange().start && !dateRange().end && dateRange().start! > day
+          "
+          [class]="
+            cn(
+              ' w-7 h-7 rounded-lg flex items-center justify-center text-neutral-N800 transition-all duration-200 ease-linear border border-transparent hover:border-orange-O400 disabled:hover:border-transparent disabled:hover:border-none disabled:text-neutral-N200',
+              {
+                'font-medium bg-orange-O50 text-orange-O400 rounded-r-none':
+                  day.getDate() === dateRange().start?.getDate() &&
+                  day.getMonth() === dateRange().start?.getMonth() &&
+                  day.getFullYear() === dateRange().start?.getFullYear()
+              },
+
+              {
+                'bg-neutral-N200 rounded-none':
+                  dateRange().start &&
+                  dateRange().end &&
+                  day > dateRange().start! &&
+                  day < dateRange().end!
+              },
+
+              {
+                'bg-neutral-N200 rounded-none':
+                  dateRange().start &&
+                  !dateRange().end &&
+                  hoveredDay()! > dateRange().start! &&
+                  hoveredDay()! > day &&
+                  dateRange().start! < day
+              },
+              {
+                'font-medium bg-orange-O50 text-orange-O400 rounded-l-none rounded-r-lg':
+                  dateRange().end &&
+                  day.getDate() === dateRange().end!.getDate() &&
+                  day.getMonth() === dateRange().end!.getMonth() &&
+                  day.getFullYear() === dateRange().end!.getFullYear()
+              },
+
+              {
+                'bg-white font-normal text-neutral-N800 rounded-none':
+                  dateRange().start &&
+                  day.getMonth() !== startMonth().getMonth()
+              },
+              {
+                'text-neutral-N400': day.getMonth() !== startMonth().getMonth()
+              }
+            )
+          "
+        >
+          {{ day.getDate() }}
+        </button>
+      }
+    </div>
+  }
+</ng-template>
+
+<ng-template #endMonthCalendar>
+  <fnc-date-days></fnc-date-days>
+  @for (week of endMonthDays(); track week) {
+    <div class="grid grid-cols-7 gap-2 gap-y-4 h-[2.2rem]">
+      @for (day of week; track day) {
+        <button
+          [attr.data-day]="day"
+          (mouseover)="handleHoveredDays(day)"
+          (focus)="handleHoveredDays(day)"
+          [disabled]="
+            dateRange().start && !dateRange().end && dateRange().start! > day
+          "
+          (click)="$event.stopPropagation(); selectDateRange(day)"
+          [class]="
+            cn(
+              ' w-7 h-7 rounded-lg flex items-center justify-center text-neutral-N800 transition-all duration-200 ease-linear border border-transparent hover:border-orange-O400 disabled:hover:border-transparent disabled:hover:border-none disabled:text-neutral-N200',
+
+              {
+                'bg-neutral-N200 rounded-none':
+                  dateRange().start &&
+                  dateRange().end &&
+                  day > dateRange().start! &&
+                  day < dateRange().end!
+              },
+
+              {
+                'bg-neutral-N200 rounded-none':
+                  dateRange().start &&
+                  !dateRange().end &&
+                  hoveredDay()! > dateRange().start! &&
+                  hoveredDay()! > day &&
+                  dateRange().start! < day
+              },
+
+              {
+                'font-medium bg-orange-O50 text-orange-O400 rounded-l-none rounded-r-lg':
+                  dateRange().end &&
+                  day.getDate() === dateRange().end!.getDate() &&
+                  day.getMonth() === dateRange().end!.getMonth() &&
+                  day.getFullYear() === dateRange().end!.getFullYear()
+              },
+
+              {
+                'bg-white font-normal text-neutral-N800 rounded-none':
+                  dateRange().start &&
+                  dateRange().end &&
+                  day.getMonth() !== endMonth().getMonth()
+              },
+              {
+                'text-neutral-N400': day.getMonth() !== endMonth().getMonth()
+              }
+            )
+          "
+        >
+          {{ day.getDate() }}
+        </button>
+      }
+    </div>
+  }
+</ng-template>

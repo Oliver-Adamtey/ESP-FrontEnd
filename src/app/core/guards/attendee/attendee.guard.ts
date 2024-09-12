@@ -1,24 +1,36 @@
-import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 
-export const attendeeGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state:RouterStateSnapshot ) => {
+@Injectable({
+  providedIn: 'root'
+})
+export class AttendeeGuard implements CanActivate {
 
-  const adminSession = typeof localStorage !== 'undefined' ? localStorage.getItem(environment.ATTENDEE_TOKEN) : null;
+  constructor(private router: Router) {}
 
-  const router: Router = inject(Router);
-  const protectedRoutes: string[] = [
-    // '/admin-dash',
-    // '/admin-event',
-    // '/admin-users',
-    // '/admin-create-event',
-    // '/admin-settings',
-  ];
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): boolean {
+      
+    const attendeeSession = sessionStorage.getItem(environment.ATTENDEE_TOKEN);
+    const onboardingComplete = sessionStorage.getItem('onboardingComplete') === 'true';
 
-  if (adminSession) {
-    return protectedRoutes.includes(state.url);
-  } else {
-    router.navigate(['/login']);
-    return false;
+    if (!attendeeSession) {
+      this.router.navigate(['/login']);
+      return false;
+    }
+
+    if (!onboardingComplete && !state.url.startsWith('/onboarding-step')) {
+      this.router.navigate(['/onboarding-step1']);
+      return false;
+    }
+
+    if (onboardingComplete && state.url.startsWith('/onboarding-step')) {
+      this.router.navigate(['/attendee-home']);
+      return false;
+    }
+
+    return true;
   }
-};
+}

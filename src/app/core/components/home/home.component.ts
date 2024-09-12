@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { LoginComponent } from "../login/login.component";
 import { RegistrationComponent } from "../registration/registration.component";
 import { RegistrationService } from '../../services/Registration/registration.service';
 import { FormsModule } from '@angular/forms';
 import { filter } from 'rxjs';
-import { navigationTexts, buttonTexts, mainHeading, subHeading, getStartedText, logoImagePath, homeImagePath } from './text';
+import { homeConstants } from './home-text';
+import { HomeAccordionComponent } from './accordion/home-accordion.component';
+
 
 
 
@@ -16,19 +18,22 @@ import { navigationTexts, buttonTexts, mainHeading, subHeading, getStartedText, 
     standalone: true,
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
-    imports: [ CommonModule, RouterOutlet, LoginComponent, RegistrationComponent, RouterLink, FormsModule, ]
+    imports: [ CommonModule, RouterOutlet, LoginComponent, RegistrationComponent,HomeAccordionComponent, RouterLink, FormsModule, ]
 })
 export class HomeComponent {
 
-  navigationTexts = navigationTexts;
-  buttonTexts = buttonTexts;
-  mainHeading = mainHeading;
-  subHeading = subHeading;
-  getStartedText = getStartedText;
-  logoImagePath = logoImagePath;
-  homeImagePath = homeImagePath
+  constants = homeConstants
+constructor(private router: Router, private activatedRoute: ActivatedRoute){}
 
-constructor(private router: Router){}
+ngOnInit() {
+  this.activatedRoute.fragment.subscribe((fragment: string | null) => {
+    if (fragment) this.jumpToSection(fragment);
+  });
+}
+
+jumpToSection(section: string | null) {
+  if (section) document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
+}
 
 Login(){
   this.router.navigate(['/login']);

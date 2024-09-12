@@ -1,32 +1,30 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { CreateEventService } from '../../../../services/create-event/create-event.service';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
-import { TagInputModule } from 'ngx-chips';
-import {Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { environment } from '../../../../../../environments/environment';
+import { CreateEventAdminService } from '../../../../services/Admin/create-event-admin/create-event-admin.service';
+import { eventFields } from '../../../../Interface/create-event/organizer';
+import { timer, take } from 'rxjs';
+import { OrganizerCreateEventBarComponent } from "../../../../../shared/Organizer/organizer-create-event-bar/organizer-create-event-bar.component";
+import { PreloadComponent } from "../../../../../shared/create-event-preload/preload.component";
 
 @Component({
-  selector: 'app-create-event-admin',
-  standalone: true,
-  imports: [
-
-    CommonModule,
-    RouterLink,
-    FormsModule,
-    ReactiveFormsModule,
-    TagInputModule,
-    ReactiveFormsModule,
-    CommonModule,
-    ScrollingModule
-
-
-  ],
-  templateUrl: './create-event-admin.component.html',
-  styleUrl: './create-event-admin.component.css'
+    selector: 'app-create-event-admin',
+    standalone: true,
+    templateUrl: './create-event-admin.component.html',
+    styleUrl: './create-event-admin.component.css',
+    imports: [
+        CommonModule,
+        RouterLink,
+        FormsModule,
+        ReactiveFormsModule,
+        ReactiveFormsModule,
+        CommonModule,
+        ScrollingModule,
+        OrganizerCreateEventBarComponent,
+        PreloadComponent
+    ]
 })
 export class CreateEventAdminComponent {
 
@@ -88,12 +86,15 @@ export class CreateEventAdminComponent {
   CreateEvent: FormGroup
 
   isSubmitted: boolean = false;
+  isError: boolean = false
 
-  constructor(private createEvent: CreateEventService, private router: Router, private fb: FormBuilder) {
+  discountObj: any[] = [];
+  tiersObj: any[] = [];
+
+
+  constructor(private createEvent: CreateEventAdminService, private router: Router, private fb: FormBuilder) {
 
     this.CreateEvent = new FormGroup({
-
-
       eventTitle: new FormControl('', [Validators.required]),
       eventCategory: new FormControl(['']),
       eventStartDate: new FormControl('', [Validators.required]),
@@ -110,7 +111,6 @@ export class CreateEventAdminComponent {
       scheduleTime: new FormControl(''),
       organizerEmail: new FormControl(''),
       organizerName: new FormControl(''),
-      ticketType: new FormControl(''),
       ticketStatus: new FormControl(''),
       venueLocation: new FormControl('', [Validators.required]),
       venueAddress1: new FormControl('', [Validators.required]),
@@ -120,49 +120,230 @@ export class CreateEventAdminComponent {
       country: new FormControl('', [Validators.required]),
       venueLayoutUrl: new FormControl('', [Validators.required]),
       seatingTypeUrl: new FormControl('', [Validators.required]),
-      ticketQuantity: new FormControl('')
+      ticketName: new FormControl(''),
+      reservedTicket: new FormControl(''),
+
+      discounts: new FormControl(''),
+
+      ticketTiers: new FormControl(''),
+
+      name: new FormControl(''),
+      price: new FormControl(''),
+      allocation: new FormControl(''),
+      reserveAllocation: new FormControl(''),
+
+      discountVariable: new FormControl(''),
+      discountRule: new FormControl(''),
+      conditionValue: new FormControl(''),
+      discountType: new FormControl(''),
+
+      discountValue: new FormControl(''),
+
 
     });
 
+    this.CreateEvent.get('organizerName')?.patchValue(this.fullName)
+    this.loadFromLocalStorage();
+
+
 
   }
 
+
+  get discountVariable() {
+    return this.CreateEvent.get('discountVariable')!;
+  }
+  get discountRule() {
+
+    return this.CreateEvent.get('discountRule')!;
+
+  }
+  get conditionValue() {
+
+    return this.CreateEvent.get('conditionValue')!;
+  }
+  get discountValue() {
+
+    return this.CreateEvent.get('discountValue')!;
+  }
+
+  get discounts() {
+    return this.CreateEvent.get('discounts')!;
+  }
+
+
+
+  get name() {
+    return this.CreateEvent.get('name')!;
+  }
+  get price() {
+    return this.CreateEvent.get('price')!;
+  }
+  get allocation() {
+    return this.CreateEvent.get('allocation')!;
+  }
+  get reserveAllocation() {
+    return this.CreateEvent.get('reserveAllocation')!;
+  }
+
+  get ticketTiers() {
+    return this.CreateEvent.get('ticketTiers')!;
+  }
+  get discountType() {
+    return this.CreateEvent.get('discountType')!;
+  }
+
+  saveAndContinue = (): void => {
+    const fields = [
+      'eventTitle',
+      'eventCategory',
+      'eventStartDate',
+      'eventEndDate',
+      'eventStartTime',
+      'eventEndTime',
+      'tags',
+      'tag',
+      'eventImageUrl',
+      'organizerLogo',
+      'eventSummary',
+      'eventPrice',
+      'scheduleDate',
+      'scheduleTime',
+      'organizerEmail',
+      'fullName',
+      'ticketType',
+      'ticketStatus',
+      'venueLocation',
+      'venueAddress1',
+      'venueAddress2',
+      'city',
+      'stateProvinceRegion',
+      'country',
+      'venueLayoutUrl',
+      'seatingTypeUrl',
+      'ticketQuantity',
+
+
+
+
+
+    ];
+
+    fields.forEach(field => {
+      const value = this.CreateEvent.get(field)?.value;
+      if (value) {
+        localStorage.setItem(field, value);
+      }
+    });
+
+    console.log(this.CreateEvent.value);
+
+
+  }
+
+
+
+
+  loadFromLocalStorage = (): void => {
+    eventFields.forEach(field => {
+      const value = localStorage.getItem(field);
+      if (value) {
+        this.CreateEvent.get(field)?.patchValue(value);
+      }
+    });
+  }
+
+  event = localStorage.getItem('eventTitle');
+
+
   onSubmit() {
+
+
+    console.log(this.CreateEvent.value)
+
+    if (this.CreateEvent.get('ticketStatus')?.value == 'Free') {
+
+      this.CreateEvent.get('ticketTiers')?.reset()
+
+    } else if(this.CreateEvent.get('ticketStatus')?.value == 'Paid'){
+      {
+
+
+        localStorage.setItem('name', this.name.value);
+        localStorage.setItem('price', this.price.value);
+        localStorage.setItem('allocation', this.allocation.value);
+        localStorage.setItem('reserveAllocation', this.reserveAllocation.value);
+
+        const name = localStorage.getItem('name');
+        const price = localStorage.getItem('price');
+        const allocation = localStorage.getItem('allocation');
+        const reserveAllocation = localStorage.getItem('reserveAllocation');
+        const discounts = this.discountObj
+
+        console.log('discount', this.discounts.value);
+
+        this.tiersObj.push({
+          name,
+          price,
+          allocation,
+          reserveAllocation,
+          discounts
+
+
+        });
+
+        this.ticketTiers.patchValue(this.tiersObj, this.discounts)
+
+
+      }
+
+
+    }
+
+    // this.tiersObj = [];
+
     if (this.CreateEvent.valid) {
       this.isSubmitted = true;
 
-      if(!localStorage ==undefined){
-        const token = localStorage.getItem(environment.ADMIN_TOKEN);
-
-
       const postData = this.CreateEvent.value;
 
-      postData.ticketStatus = postData.eventPrice ? 'Paid' : 'Free';
 
-      postData.token = token;
 
-      this.createEvent.createEvent(postData).subscribe({
-        next: (response: any) => {
-          console.log('Form submitted successful', response);
-          alert('Form submitted successful');
+      timer(500)
+        .pipe(take(1))
+        .subscribe(() => {
           this.eventCreated = true;
-          this.saveFormDataToLocalstorage(postData);
-          this.router.navigateByUrl('/org-create-event');
-        },
+          this.createEvent.createEvent(postData).subscribe({
+            next: (response: any) => {
+              console.log('Form submitted successful', response);
 
-        error: (error) => {
-          console.error('Error creating post:', error);
-          console.log(postData);
-          alert('Failed to create event. Please try again later');
-          console.log(this.CreateEvent.get('eventImageUrl'));
-        }
-      });
+              this.publishNow = true;
+              this.saveFormDataToLocalstorage(postData);
+              localStorage.removeItem('createEvent')
+              this.router.navigateByUrl('/create-event-success').then(() => {
+                setTimeout(() => {
+                  this.router.navigateByUrl('/admin-event');
+                }, 3000);
+
+
+
+              });
+            },
+            error: (error) => {
+              console.error('Error creating post:', error);
+              console.log(postData);
+              this.eventCreated = false;
+              this.isError = true
+            }
+          });
+        });
     } else {
       this.fields = true;
-      // console.log('All fields required');
+      this.eventCreated = false;
     }
   }
-  }
+
+
 
   private saveFormDataToLocalstorage(formData: any): void {
     localStorage.setItem('createEvent', JSON.stringify(formData).toString());
@@ -170,33 +351,11 @@ export class CreateEventAdminComponent {
   }
 
 
-  addTag(tag: string) {
-    if (tag && !this.tags.includes(tag)) {
-      this.tags.push(tag);
-      this.tagsArray.patchValue(this.tags);
-    }
-    this.tag.patchValue('');
-    console.log('this.tags', this.tags)
-    console.log('Tags Array', this.tagsArray.value);
-
-  }
-
-  removeTag(tagToRemove: string) {
-    this.tags = this.tags.filter(tag => tag !== tagToRemove);
-  }
-
-  confirmDiscard() {
-    const confirmDiscard = window.confirm('Are you sure you want to leave?');
-    if (confirmDiscard) {
-      this.router.navigate(['/admin-event']);
-    }
-
-  }
 
   adminDash() {
     this.router.navigate(['/admin-dash']);
   }
-  adminEvent() {
+  orgEvent() {
     this.router.navigate(['/admin-event'])
   }
 
@@ -212,11 +371,31 @@ export class CreateEventAdminComponent {
   prevStep() {
     this.step--;
   }
+  freeAndPaid: boolean = true;
+
+  isPaidSelected: boolean = false;
+  isFreeSelected: boolean = false;
 
 
-  togglePaidForm() {
-    this.paidFormVisible = !this.paidFormVisible;
+  toggleFreeForm(isFreeSelected: boolean) {
+    this.isPaidSelected = false;
+    this.isFreeSelected = !this.isFreeSelected
+    this.CreateEvent.get('ticketStatus')?.setValue("Free")
+    console.log(this.CreateEvent.value)
+
   }
+
+  togglePaidForm(isPaidSelected: boolean) {
+
+    this.isFreeSelected = false;
+    this.isPaidSelected = !this.isPaidSelected
+    this.CreateEvent.get('ticketStatus')?.setValue("Paid")
+    console.log(this.CreateEvent.value)
+
+
+  }
+
+
 
   disable: boolean = true;
 
@@ -295,14 +474,11 @@ export class CreateEventAdminComponent {
         console.log("File size exceeds the maximum allowed size of 10 MB");
         return;
       }
-
       const reader = new FileReader();
 
       reader.onload = () => {
         const fileDataUrl = reader.result as string;
         this.seatingTypeUrl = fileDataUrl;
-
-        // Convert the file to base64 and set it as the value of the form control
         const readerForBase64 = new FileReader();
         readerForBase64.onload = () => {
           const base64Data = readerForBase64.result as string;
@@ -333,8 +509,6 @@ export class CreateEventAdminComponent {
       reader.onload = () => {
         const fileDataUrl = reader.result as string;
         this.eventImageUrl = fileDataUrl;
-
-        // Convert the file to base64 and set it as the value of the form control
         const readerForBase64 = new FileReader();
         readerForBase64.onload = () => {
           const base64Data = readerForBase64.result as string;
@@ -346,7 +520,6 @@ export class CreateEventAdminComponent {
       reader.readAsDataURL(file);
     }
   }
-
 
 
   toggleStartTime(event: any) {
@@ -370,8 +543,6 @@ export class CreateEventAdminComponent {
   }
 
 
-
-
   toggleSchedule(event: any) {
     this.scheduleForm = true;
     this.scheduleForm = event.target.value === 'later';
@@ -384,13 +555,6 @@ export class CreateEventAdminComponent {
     this.scheduleForm = !this.publishNow;
   }
 
-  ngOnInit(): void {
-
-    this.togglePublishNow
-    this.toggleSchedule
-  }
-
-
 
   get tagsArray() {
     return this.CreateEvent.get('tags')!;
@@ -400,5 +564,227 @@ export class CreateEventAdminComponent {
     return this.CreateEvent.get('tag')!;
   }
 
+
+  addTag(tag: string) {
+    if (tag && !this.tags.includes(tag)) {
+      this.tags.push(tag);
+      this.tagsArray.patchValue(this.tags);
+    }
+    this.tag.patchValue('');
+    console.log('this.tags', this.tags)
+    console.log('Tags Array', this.tagsArray.value);
+
+  }
+
+  removeTag(tagToRemove: string) {
+    this.tags = this.tags.filter(tag => tag !== tagToRemove);
+  }
+
+
+  paid: boolean = false;
+
+  paidForm() {
+    this.paid = !this.paid
+  }
+
+  isLogoutModalVisible = false;
+
+  showLogoutConfirmation() {
+    this.isLogoutModalVisible = true;
+  }
+
+  cancelLogout() {
+    this.isLogoutModalVisible = false;
+  }
+
+  confirmLogout() {
+    console.log('Logged out');
+    this.isLogoutModalVisible = false;
+    this.router.navigate(['/org-event']);
+  }
+
+
+  isFormVisible: boolean = false;
+
+  rules: any[] = [{}];
+
+  toggleAccordion() {
+    this.isFormVisible = !this.isFormVisible;
+  }
+
+  tier: number = 1
+
+  removeRule(index: number) {
+
+    if (this.tier > 0) {
+      console.log(this.discounts.value, index, this.tier);
+      this.rules.splice(index, 1);
+    }
+
+  }
+
+
+  addRule() {
+this.saveAndContinue();
+
+    while (true) {
+
+      if (this.rules.length <= 1) {
+        this.rules.push({});
+
+        localStorage.setItem('name', this.name.value);
+        localStorage.setItem('price', this.price.value);
+        localStorage.setItem('allocation', this.allocation.value);
+        localStorage.setItem('reserveAllocation', this.reserveAllocation.value);
+
+        localStorage.setItem('discountVariable', this.discountVariable.value);
+        localStorage.setItem('discountRule', this.discountRule.value);
+        localStorage.setItem('conditionValue', this.conditionValue.value);
+        localStorage.setItem('discountValue', this.discountValue.value);
+        localStorage.setItem('discountType', this.discountType.value);
+
+        const discountVariable = localStorage.getItem('discountVariable');
+        const discountRule = localStorage.getItem('discountRule');
+        const conditionValue = localStorage.getItem('conditionValue');
+        const discountValue = localStorage.getItem('discountValue');
+        const discountType = localStorage.getItem('discountType');
+
+        localStorage.removeItem('discountVariable');
+        localStorage.removeItem('discountRule');
+        localStorage.removeItem('conditionValue');
+        localStorage.removeItem('discountValue');
+        localStorage.removeItem('discountType');
+
+        this.discountObj.push({
+          discountVariable, discountRule, conditionValue, discountValue, discountType,
+        });
+
+        // this.discounts.patchValue(this.discountObj);
+        // this.ticketTiers.patchValue(this.tiersObj)
+
+        console.log(this.discounts.value);
+
+        break;
+      }
+      else if (this.rules.length == 2) {
+        this.rules.push({});
+
+        localStorage.setItem('discountVariable', this.discountVariable.value);
+        localStorage.setItem('discountRule', this.discountRule.value);
+        localStorage.setItem('conditionValue', this.conditionValue.value);
+        localStorage.setItem('discountValue', this.discountValue.value);
+        localStorage.setItem('discountType', this.discountType.value);
+
+
+        const discountVariable = localStorage.getItem('discountVariable');
+        const discountRule = localStorage.getItem('discountRule');
+        const conditionValue = localStorage.getItem('conditionValue');
+        const discountValue = localStorage.getItem('discountValue');
+        const discountType = localStorage.getItem('discountType');
+
+        localStorage.removeItem('discountVariable');
+        localStorage.removeItem('discountRule');
+        localStorage.removeItem('conditionValue');
+        localStorage.removeItem('discountValue');
+        localStorage.removeItem('discountType');
+
+        this.discountObj.push({
+          discountVariable, discountRule, conditionValue, discountValue, discountType,
+        });
+
+        // this.discounts.patchValue(this.discountObj);
+        console.log(this.discounts.value);
+
+        break;
+      }
+      else if (this.rules.length == 3) {
+
+        localStorage.setItem('discountVariable', this.discountVariable.value);
+        localStorage.setItem('discountRule', this.discountRule.value);
+        localStorage.setItem('conditionValue', this.conditionValue.value);
+        localStorage.setItem('discountValue', this.discountValue.value);
+        localStorage.setItem('discountType', this.discountType.value);
+
+
+        const discountVariable = localStorage.getItem('discountVariable');
+        const discountRule = localStorage.getItem('discountRule');
+        const conditionValue = localStorage.getItem('conditionValue');
+        const discountValue = localStorage.getItem('discountValue');
+        const discountType = localStorage.getItem('discountType');
+
+        localStorage.removeItem('discountVariable');
+        localStorage.removeItem('discountRule');
+        localStorage.removeItem('conditionValue');
+        localStorage.removeItem('discountValue');
+        localStorage.removeItem('discountType');
+
+        this.discountObj.push({
+          discountVariable, discountRule, conditionValue, discountValue, discountType,
+        });
+
+        this.discounts.patchValue(this.discountObj);
+
+        console.log(this.discounts.value);
+
+        break;
+      } else {
+        // Reset the rules length to simulate retrying.
+        this.rules.length = 0; // or any logic to reset and retry
+        this.discounts.reset();
+      }
+    }
+
+            this.discounts.patchValue(this.discountObj);
+            console.log('discount', this.discounts.value);
+
+  }
+
+
+  tickets: any[] = [{ id: 0, tier: 1 }];
+  currentTier = 1;
+
+  addTicket() {
+
+    this.rules.length + 1
+    this.tier++
+
+
+this.addRule();
+
+    const name = localStorage.getItem('name');
+    const price = localStorage.getItem('price');
+    const allocation = localStorage.getItem('allocation');
+    const reserveAllocation = localStorage.getItem('reserveAllocation');
+    const discounts = this.discountObj
+
+
+    this.discounts.patchValue(this.discountObj);
+
+    this.tiersObj.push({
+      name,
+      price,
+      allocation,
+      reserveAllocation,
+      discounts
+
+
+    });
+
+    // this.discountObj.values.length = 2
+    this.ticketTiers.patchValue(this.tiersObj, this.discounts)
+
+    console.log('Tier array', this.ticketTiers.value)
+
+    console.log(this.discountObj)
+    console.log(this.discounts.value)
+    this.currentTier += 1; // Correctly increment the tier
+    this.tickets.push({ id: this.tickets.length, tier: this.currentTier });
+    console.log(this.tickets, this.currentTier);
+  }
+fullName: string = 'Christian Jones';
+
+confirmDiscard() {
+
+}
 
 }

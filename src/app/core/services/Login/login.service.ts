@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
+import { environment } from '@environments/environment';
+import { AuthenticationResponse, LoginRequest } from '@interface/registration/login-register';
 
 
 
@@ -11,20 +12,19 @@ import { environment } from '../../../../environments/environment';
 export class LoginService {
 
   constructor(private HttpClient: HttpClient) { }
-
+  token = sessionStorage.getItem('Token')
 
 
   private loginApi = environment.LOGIN_URL;
 
-  login(data: any): Observable<any> {
+  login(data: LoginRequest): Observable<AuthenticationResponse> {
 
     const headers = new HttpHeaders()
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
     .set('Access-Control-Allow-Origin', 'Content-Type')
 
-    return this.HttpClient.post<any>(this.loginApi, data, {headers})
+    return this.HttpClient.post<AuthenticationResponse>(this.loginApi, data, {headers})
   }
-
 
 }

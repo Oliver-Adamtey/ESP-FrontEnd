@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ForgotPassword } from '../../components/Interface/forgot password/forgot-password';
-import { environment } from '../../../../environments/environment';
+import { ForgotPassword } from '@interface/forgot password/forgot-password';
+import { environment } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class ForgotpasswordService {
 
   constructor(private httpClient: HttpClient) { }
 
-  ForgotPassword(data: any): Observable<any> {
+  ForgotPassword(data: ForgotPassword): Observable<any> {
 
 
   const headers = new HttpHeaders()

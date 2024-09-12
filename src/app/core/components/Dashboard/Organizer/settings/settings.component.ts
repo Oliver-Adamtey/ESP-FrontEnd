@@ -1,33 +1,64 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { AdminProfile } from '@interface/Admin/getAllUsers';
+import { Component, EventEmitter, Inject, Output, PLATFORM_ID } from '@angular/core';
 import { Router, RouterLink, RouterModule } from '@angular/router';
-import { SettingTexts, settingImages } from './texts';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SettingsService } from '../../../../services/Organizer/Settings/settings.service';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SettingsService } from '@services/org-settings/settings.service';
 import { isPlatformBrowser } from '@angular/common';
-import { environment } from '../../../../../../environments/environment';
+import { environment } from '@environments/environment';
+import { OrganizerDashComponent } from "@component/Organizer/organizer-sidebar/organizer-dash.component";
+import { OrganizerTopBarComponent } from "@component/Organizer/organizer-top-bar/organizer-top-bar.component";
 
+import { SettingTexts, settingImages } from './texts';
+import { SuccessComponent } from "@component/login-error-handling/success/success.component";
+import { UnauthorizedComponent } from "@component/login-error-handling/unauthorized/unauthorized.component";
+import { InvalidPasswordComponent } from "@component/login-error-handling/invalid-password/invalid-password.component";
+import { ViewProfileResponse, ViewProfileResponseData } from '@interface/service/interface';
+import { NotificationService } from '@notifications//notification.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AccountSettingsImageProcessingService } from '../../../../services/Organizer/Account Settings Image Processing/account-settings-image-processing.service';
 
-SettingTexts
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [
-
-RouterModule,
-ReactiveFormsModule,
-CommonModule,
-RouterLink,
-
-  ],
   templateUrl: './settings.component.html',
-  styleUrl: './settings.component.css'
+  styleUrl: './settings.component.css',
+  imports: [
+    RouterModule,
+    ReactiveFormsModule,
+    CommonModule,
+    RouterLink,
+    OrganizerDashComponent,
+    OrganizerTopBarComponent,
+    SuccessComponent,
+    UnauthorizedComponent,
+    InvalidPasswordComponent
+  ]
 })
 export class SettingsComponent {
 
-  SettingTexts = SettingTexts
-  settingImages = settingImages
 
+
+
+  heading = "Settings"
+  sub_heading = "Plan and manage your gatherings effortlessly."
+  personalInfo = "Personal Info"
+  updatePhoto = "Update your photo and personal details."
+  firstNameLabel = "First Name"
+  lastNameLabel = "Last Name"
+  imageSpec = "SVG, PNG, JPG or GIF (max. 800x400px)"
+
+  SettingTexts = SettingTexts;
+  settingImages = settingImages;
+  fullName = '';
+  firstName = '';
+  lastName = '';
+  email = '';
+  profileImageUrl = '';
+  showProfileCard: boolean = false;
+  selectedFile: File | null = null;
+
+  profileImage: string | null = null;
 
   OrgDasImg: string = 'assets/esp/logo.png'
   DashBoardChartImg: string = 'assets/esp/dashboard/bar-chart-square-02.png'
@@ -64,56 +95,108 @@ export class SettingsComponent {
   eventCreated: boolean = true
   eventNotCreated: boolean = false
 
+  isSubmitted: boolean = false;
+  unAuthorized: boolean = false;
+  isIncorrect: boolean = false;
+  loading: boolean = false;
+
+
   modal = false
 
   venueLayoutUrl: string | ArrayBuffer | null = null;
 
-
-  orgSetti: FormGroup;
+  organizerAccountForm: FormGroup;
   data: any;
-  errormessage: string = "provide valid credentials";
   isError: boolean = false;
-  isSubmitted: boolean = false;
+  success = 'profile updated successfully'
+  errorMessage = 'Update atleast one field'
 
-  constructor(private router: Router, private orgSettings_: SettingsService, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(
+    private router: Router,
+    private orgSettings_: SettingsService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private notificationService: NotificationService,
+    private fileProcessingService: AccountSettingsImageProcessingService
+  ) {
 
-    this.orgSetti = new FormGroup({
-      email: new FormControl("", [Validators.required, Validators.email]),
-      password: new FormControl("", [Validators.required, Validators.minLength(8)])
+    this.organizerAccountForm = new FormGroup({
+      email: new FormControl(''),
+      firstName: new FormControl(''),
+      lastName: new FormControl(""),
+      profileImageUrl: new FormControl("",)
     });
 
+    this.fileProcessingService.profileImage$.subscribe((image) => {
+      if (image) {
+        this.profileImageUrl = image;
+        this.organizerAccountForm.get('profileImageUrl')?.setValue(image);
+      }
+    });
   }
+
+  getProfileImage(image: string) {
+    this.profileImageUrl = image;
+    this.organizerAccountForm.get('profileImageUrl')?.setValue(image);
+  }
+
+  onFileSelected(event: Event, controlName: string): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.fileProcessingService.processFile(file, controlName);
+      this.fileProcessingService.uploadFile(file);
+    }
+  }
+
+  onDrop(event: DragEvent, controlName: string): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (event.dataTransfer && event.dataTransfer.files.length > 0) {
+      const file = event.dataTransfer.files[0];
+      this.fileProcessingService.processFile(file, controlName);
+      this.fileProcessingService.uploadFile(file);
+    }
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    event.dataTransfer!.dropEffect = 'copy';
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
   onSubmit() {
-    if (this.orgSetti.valid) {
-      const postData = this.orgSetti.value;
+    if (this.organizerAccountForm.valid) {
+      this.loading = true;
+      const postData = this.organizerAccountForm.value;
       this.orgSettings_.orgSettings_(postData).subscribe({
         next: (response) => {
+          this.notificationService.showSuccess('Profile successfully updated');
+          sessionStorage.setItem('organizerName', `${this.organizerAccountForm.get('firstName')?.value} ${this.organizerAccountForm.get('lastName')?.value}`);
           this.isSubmitted = true;
-          console.log('Settings successfully updated', response);
-          alert('Settings successfully updated');
+          this.loading = false;
 
-          if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem(environment.ORGANIZER_TOKEN, response.token);
-          }
-
+          setTimeout(() => {
+            this.router.navigateByUrl('/org-dash');
+          }, 2000);
         },
-        error: (error) => {
-          console.error('Error updating settings:', error);
-          if (error && error.error && error.error.businessErrorDescription === "Login and password is incorrect") {
-            this.isError = true;
-            alert('Login or password is incorrect');
-          } else if (error && error.error && error.error.businessErrorDescription === "User account is locked") {
-            alert('User account is locked, click on forgot password');
-          } else {
-            console.log("An error occurred while updating settings. Please try again later");
-            alert('An error occurred due to account activation');
-          }
-        }
+        error: (error: HttpErrorResponse) => {
+          this.notificationService.showError(error.error.message);
+          this.isError = true;
+          this.loading = false;
+        },
       });
     } else {
       this.isError = true;
     }
   }
+
 
 
   orgEvent() {
@@ -129,18 +212,6 @@ export class SettingsComponent {
 
   orgUsers() {
     this.router.navigate(['/org-users'])
-
-  }
-
-  logout() {
-
-    const confirmLogOut = window.confirm('Are you sure you want to logout?');
-    if (confirmLogOut) {
-      localStorage.removeItem(environment.ORGANIZER_TOKEN);
-      localStorage.clear();
-      this.router.navigate(['/login']);
-
-    }
 
   }
 
@@ -163,12 +234,12 @@ export class SettingsComponent {
   }
 
   profile: boolean = false
-  email = 'ekumku@example.com'
+
 
   toggleCard() {
 
     this.profile = !this.profile
-    // this.router.navigate(['/login']);
+
 
   }
 
@@ -191,7 +262,6 @@ export class SettingsComponent {
       const maxSize = 10 * 1024 * 1024;
 
       if (fileSize > maxSize) {
-        console.log("File size exceeds the maximum allowed size of 10 MB");
         return;
       }
 
@@ -206,4 +276,80 @@ export class SettingsComponent {
 
 
 
+  saveChanges(): void {
+    const userId = sessionStorage.getItem('userId');
+    if (!userId) {
+      return;
+    }
+
+  }
+
+
+
+
+  cancel(): void {
+    this.isLogoutModalVisible = true;
+
+  }
+
+
+  isLogoutModalVisible = false;
+
+  cancelDiscard() {
+    this.isLogoutModalVisible = false;
+  }
+
+  confirmDiscard() {
+    this.isLogoutModalVisible = false;
+    this.router.navigate(['/org-dash']);
+  }
+
+
+  ngOnInit() {
+
+    this.viewProfile()
+
+    const orgEmail = sessionStorage.getItem('OrgEmail');
+    const orgFirstName = sessionStorage.getItem('firstName');
+    const orgLastName = sessionStorage.getItem('lastName');
+    const orgProfileImageUrl = sessionStorage.getItem('profileImageUrl');
+
+  }
+
+
+  profilImage = sessionStorage.getItem('profileImage')
+
+  viewProfile() {
+    const userId = sessionStorage.getItem('userId');
+    if (userId) {
+      this.orgSettings_.viewProfile(userId).subscribe(
+        (response: ViewProfileResponse) => {
+          const data = response.data;
+          this.organizerAccountForm.get('email')?.patchValue(data.email)
+          this.organizerAccountForm.get('firstName')?.patchValue(data.firstName)
+          this.organizerAccountForm.get('lastName')?.patchValue(data.lastName)
+          this.organizerAccountForm.get('profileImageUrl')?.patchValue(data.profileImageUrl)
+          this.profileImage = data.profileImageUrl;
+        },
+        (error) => {
+          this.notificationService.showError('Error receiving notifications');
+
+        }
+      );
+    } else {
+      this.notificationService.showError('Error receiving notifications');
+
+    }
+  }
+
+
+
+
+
+
 }
+
+
+
+
+

@@ -1,113 +1,107 @@
-<div class="container mx-auto w-full xl:min-h-max font-inter">
+<div class=" relative w-full">
+  <div class="mx-auto">
+    <div class=" container relative mx-auto flex items-center justify-between p-4 h-16">
+      <div class="logo flex gap-4 items-center">
+        <img [src]="constants.logoImagePath" class="w-16">
+        <h1 class="text-red-500 font-bold"><span class="text-black">Event</span>Vista</h1> 
+      </div>
+      <div class="menu flex md:flex-row md:gap-4 flex-col">
+        <a routerLink="" fragment="home" class=" hover:text-red-500">{{constants.navigationTexts.home}}</a>
+        <a routerLink="" fragment="about" class=" hover:text-red-500">{{constants.navigationTexts.aboutUs}}</a>
+        <a routerLink=""  fragment="service" class=" hover:text-red-500">{{constants.navigationTexts.services}}</a>
+        <a routerLink=""  fragment="faqs" class=" hover:text-red-500">{{constants.navigationTexts.faqs}}</a>
+        <a routerLink=""  fragment="contact" class=" hover:text-red-500">{{constants.navigationTexts.contactUs}}</a>
+      </div>
+  
+      <div class="flex gap-3.5 items-center">
+        <a class="text-sm text-text_color cursor-pointer" (click)="Login()" type="submit" >{{constants.buttonTexts.login}}</a>
+        <a class="px-3 py-1 bg-red-500 text-white rounded text-sm cursor-pointer" (click)="Signup()" type="submit">{{constants.buttonTexts.signup}}</a>
+      </div>
+    </div>
+  </div>
+  
 
-  <div class="  navbar 2xl:flex 2xl:ml-28  2xl:mr-5 2xl:max-w-full lg:flex lg:ml-24 lg:mr-5 lg:max-w-full xl:h-[96px] 2xl:h-[96px] ">
+  <div class="hero w-full relative h-screen" id="home">
+    <div class="container absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-auto">
+      <h1 class="text-white capitalize font-bold text-5xl leading-normal">{{constants.mainHeading}}</h1>
+    <p class="text-white capitalize text-1xl my-4">{{constants.subHeading}}</p>
+      <button class="px-3 py-2 bg-login_bg text-white rounded">{{constants.getStartedText}}</button>
+    </div>
+  </div>
+
+  <div class="container mx-auto flex gap-12 justify-between my-10">
+    <div class=" w-1/2">
+      <h2 class="capitalize bg-header_bg text-red-500 w-fit px-3 py-2 font-semibold rounded" id="about">about EventVista</h2>
+      <h1 class="font-semibold text-text_color text-6xl my-10">Why choose <span class="bg-gradient-to-r from-red-400 to-red-200  text-white px-1 ">EventVista</span></h1>
+      <p class="text-text_color text-lg w-3/4 mb-10">{{constants.aboutEventVistaText}}</p>
+
+      <div class="grid grid-cols-2 gap-10" >
+        <div class="card w-72 p-6" *ngFor="let feature of constants.features">
+          <div class="w-10 bg-orange-300 rounded-full mb-4">
+            <img [src]="feature.icon" alt="" class="w-full p-2">
+          </div>
+          
+          <h3 class="text-slate-600 font-medium text-xl mb-4">{{feature.title}}</h3>
+          <p class="text-text_color">{{feature.description}}</p>
+        </div>
+      </div>
+
+      <button class="px-5 py-3 bg-login_bg text-white rounded mt-6">Get Started Today</button>
+    </div>
+    <div class="w-1/2">
+      <img [src]="constants.homeImagePath" alt="" class="">
+    </div>
+  </div>
+
+  <div class="container mx-auto my-6 ">
+    <div class="flex items-center justify-center flex-col py-5">
+      <p class="text-center text-red-700 bg-orange-100 w-fit py-1 px-3 rounded font-medium" id="service"> Services</p>
+      <p class="w-4/12 text-center text-text_color">{{constants.serviceText}}</p>
+    </div>
+
+    <div class="flex flex-col gap-4 w-full ">
+      <div class=" flex flex-wrap items-center gap-4 justify-between w-full" >
+        <div class="flex  items-center justify-center text-center flex-col w-96 border bg-red-100 p-6 rounded-xl h-96"  *ngFor="let service of constants.services">
+          <div class="icon my-5">
+            <img src="../../../../assets/esp/dashboard/file-text.svg" alt="">
+          </div>
+            <h3 class="capitalize text-slate-700 font-semibold text-lg mb-3 ">{{service.title}}</h3>
+            <p class="text-text_color">
+              {{service.description}}
+            </p>
+         
+        </div>
+      </div>
+      
+    </div>
+
     
-     <div  (click)="Home()" class=" 2xl:-ml-24 2xl:space-x-12 cursor-pointer logo 2xl:flex
-     2xl:items-center 2xl:justify-center 2xl:mb-4 2xl:mt-5 lg:flex lg:items-center lg:justify-center lg:mb-6 lg:mt-5">
-    <img src="{{logoImagePath}}" alt="Event Vista Logo" class=" sm:ml-10 md:ml-20 lg:ml-24 top-5 absolute">
-
-    <h2 class="font-bold font-inter text-[24.59px] absolute 2xl:left-[200px] 2xl:mt-2 ml-10 xl:left-[150px] lg:top-5 2xl:top-3 " >Event <span class="text-red-700">Vista</span></h2>
-</div>
-
-<div class="menu flex space-x-10 mb-6 ml-40 mt-7 2xl:ml-[500px]  xl:ml-[320px] text-[#667085]">
-  <p class="text-red-700 font-semibold cursor-pointer">{{ navigationTexts.home }}</p>
-  <p class="cursor-pointer" >{{ navigationTexts.about }}</p>
-  <p  class="cursor-pointer">{{ navigationTexts.services }}</p>
-  <p  class="cursor-pointer">{{ navigationTexts.faqs }}</p>
-  <p  class="cursor-pointer">{{ navigationTexts.contact }}</p>
-
-</div>
-
-<div class="btns 2xl:flex 2xl:ml-[300px] 2xl:w-max  lg:flex ml-[110px] w-max">
-
-  <button (click)="Login()" type="submit" class="bg-[#FFFFFF] flex cursor-pointer  text-black
-    font-normal py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-5 mb-10" >
-    {{ buttonTexts.login }}
-  </button>
-
-  <button (click)="Signup()" type="submit" class="z-5  bg-[#BC1B06] flex cursor-pointer hover:bg-[#cc210a] text-white
-    font-normal py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-5 mb-10" >
-    {{ buttonTexts.signup }}
-  </button>
-
-</div>
-
-
   </div>
 
+  <div class="container mx-auto w-full">
+    <div class="flex items-center justify-center flex-col py-5">
+      <p class="text-center text-red-700 bg-orange-100 w-fit py-1 px-3 rounded font-medium"> Meet the Team</p>
+      <p class="w-4/12 text-center text-text_color">{{constants.teamText}}</p>
+    </div>
 
-<div class="container text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-lg:text-left  2xl:-mt-[50px] lg:text-[48px] lg:mt-48 flex flex-col justify-center items-center
- xl:mt-[70px] ">
-  <p class="w-[700px] xl:w-[800px] leading-[60px] font-bold 2xl:w-[950px] text-center 2xl:size[60px]">
-    {{ mainHeading }}
-  </p>
+    <div class="flex items-center w-fit mx-auto">
+      <div class="w-52" *ngFor="let team of constants.teamMembers">
+        <img [src]="team.image" alt="">
+        <p class="text-slate-800 font-medium text-sm mt-3">{{team.name}}</p>
+        <p class="text-xs text-slate-700 font-medium" >{{team.role}}</p>
+      </div>
+    </div>
+  </div>  
 
-  <p class="lg:text-[12px] xl:mt-5 w-[532px] h-[56px] leading-5  2xl:w-[480px] xl:w-[490px] text-center font-medium">
+  <div class="container mx-auto w-full my-5" id="faqs">
+    <div class="flex items-center justify-center flex-col py-5">
+      <p class="text-center text-red-700 bg-orange-100 w-fit py-1 px-3 rounded font-medium">FAQs</p>
+      <p class="w-4/12 text-center text-text_color">{{constants.faqsText}}</p>
+    </div>
 
-    {{ subHeading }}
-  </p>
-
-
-</div>
-
-<button type="submit" class="bg-[#BC1B06] hover:bg-[#cc210a] text-white font-normal py-2 px-4 rounded
-focus:outline-none xl:top-[500px] 2xl:top-[560px] focus:shadow-outline absolute top-[560px]
-left-1/2 transform -translate-x-1/2 cursor-pointer xl:mt-10">
-  <a (click)="Signup()">{{ getStartedText }}</a>
-</button>
-
-
-</div>
-
-<div class="img xl:h-full">
-  <img src="{{homeImagePath}}" alt="" srcset="" class="2xl:w-full bg-cover bg-center "  >
-
-</div>
-
-<div class="container flex absolute m-32 pb-10 mt-10 w-2/3">
-
-
-
-  <!-- <div class="w-2/3 m-5">
-
-    <button type="submit" class="bg-[#FFF4ED]  text-[#BC1B06] font-normal py-2 px-4 rounded focus:outline-none focus:shadow-outline absolute top-[0px]  cursor-pointer">
-      <a href="/signup">Get started today</a>
-  </button>
-
-  <div class="mt-16">
-        <h3 class="text-[28px] font-bold ">Why choose <span class="bg-red-500 mt-5 text-white">EvenVista</span> </h3>
-  <p class="mt-5 w-[520px] mr-20">
-    Experience the Eventvista Advantage:
-    Elevate Your Event Planning Journey with Our Innovative Tools,
-    Expert Support, and Endless Possibilities.
-  </p>
-
-  <div class="sub-container w-2/3 flex mt-5 mr-20">
-<div class="2/3 ">
-  <h2>Head</h2>
-  <p>fdssssssssssssssssssssssssssss</p>
-</div>
-
-<div class="2/3">
-  <h2>Head</h2>
-  <p>fdssssssssssssssssssssssssssss</p>
-</div>
-
-
-
+    <div class="w-full container px-96">
+      <app-home-accordion></app-home-accordion>
+    </div>
+    
   </div>
-
-
-  </div>
-
-  </div> -->
-<!--
-  <div class="w-1/3 m-0">
-  <img src="assets/esp/dashboard/home-img.png" alt="" class="">
-  </div> -->
-
-
-
 </div>
-

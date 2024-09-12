@@ -1,4 +1,3 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -21,7 +20,21 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "baseUrl": "./src",
+    "paths": {
+      "@environments/*":["environments/*"],
+      "@constants/*":["app/core/constants/*"],
+      "@models/*":["app/core/models/*"],
+      "@services/*":["app/core/services/*"],
+      "@guards/*":["app/core/guards/*"],
+      "@components/*":["app/core/components/*"],
+      "@pipes/*":["app/shared/pipes/*"],
+      "@interface/*":["app/core/Interface/*"],
+      "@component/*":["app/shared/*"],
+      "@notifications/*":["app/notification-service*"],
+      "@pages/*":["app/pages"],
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

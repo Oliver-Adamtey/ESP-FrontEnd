@@ -1,0 +1,17 @@
+<div class="container mx-auto px-4 py-8">
+    <div class="flex flex-wrap -mx-4">
+      <div class="w-full md:w-1/3 px-4 mb-8" *ngFor="let event of events">
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+          <img class="w-full h-auto" [src]="event.eventImageUrl" alt="{{ event.eventTitle }}">
+          <div class="p-4">
+            <h2 class="text-lg font-semibold text-gray-800">{{ event.eventTitle }}</h2>
+            <p class="text-gray-600 mb-2">{{ event.eventSummary }}</p>
+            <p class="text-gray-600 mb-2">Location: {{ event.venueLocation }}</p>
+            <p class="text-gray-600 mb-2">Date: {{ event.scheduleDate }}</p>
+            <p class="text-gray-600">Amount: {{ event.eventPrice }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
