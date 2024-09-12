@@ -4,6 +4,24 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
+[Live Demo](https://esp.amalitech-dev.net/login)
+
+Admin Details
+------
+Pass: Uenr1206*
+Email: james@zlorkun.com
+Email: modelev543@inpsur.com
+
+Attendee Details
+-----------
+password: 9Oliver@3
+Email: loyika1011@ndiety.com
+nonic24306@ploncy.com
+dipad66854@konetas.com
+pass: 9Oliver@32
+
+the above could be changed later..
+
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## Code scaffolding
